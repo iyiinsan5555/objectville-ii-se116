@@ -1,4 +1,4 @@
-public class Hospital extends ServiceProvider implements Transferable {
+public class Hospital extends ServiceProvider {
     private static final int radius = 3;
 
     public Hospital(int x, int y) {
@@ -6,12 +6,7 @@ public class Hospital extends ServiceProvider implements Transferable {
     }
 
     @Override
-    public void distribute() {
-        //will get help from ServiceDistributor ex. func. call ServiceDistributor.distribute(this, radius) (will be discussed later)
-    }
-
-    @Override
-    public boolean isTransferable() {
-        return true;
+    public String getServiceType() {
+        return "Hospital";
     }
 }
