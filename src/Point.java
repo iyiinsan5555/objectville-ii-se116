@@ -40,4 +40,19 @@ public class Point {
                 ", y=" + y +
                 '}';
     }
+
+    //needed to make sure hashmap sees this class
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Point)) return false;
+
+        Point point = (Point) o;
+        return x == point.x && y == point.y;
+    }
+    // same reason as equals'
+    @Override
+    public int hashCode() {
+        return 31 * x + y;
+    }
 }
