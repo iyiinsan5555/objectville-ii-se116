@@ -1,8 +1,7 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class GridManager { //implement this next time
+public class GridManager {
     ArrayList<Cell> cellArrayList;
     HashMap<Point, Cell> cellHashMap;
     ArrayList<Cell> zones;
