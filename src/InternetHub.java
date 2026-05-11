@@ -9,14 +9,18 @@ public class InternetHub extends UtilityProvider{
     public int getTotalInternet() {
         return totalInternet;
     }
-
-    // Resets Totol Amount After Every Tick
+    
     public void setTotalInternet(int totalInternet) {
-        this.totalInternet = super.getCapacity();
+        this.totalInternet = totalInternet;
     }
 
+    // When the resource is Consumed Simulation Runner can call this
     public void decTotalInternet(int amount) {
         totalInternet -= amount;
     }
 
+    @Override
+    public void resetUtility() {
+        this.totalInternet = super.getCapacity();
+    }
 }
