@@ -9,14 +9,19 @@ public class WaterPumpingStation extends UtilityProvider {
     public int getTotalWater() {
         return TotalWater;
     }
-
-    // Resets Totol Amount After Every Tick
+    
     public void setTotalWater(int totalWater) {
-        this.TotalWater = super.getCapacity();
+        this.TotalWater = totalWater;
     }
 
+    // When the resource is Consumed Simulation Runner can call this
     public void decTotalWater(int amount) {
         TotalWater -= amount;
+    }
+    
+    @Override
+    public void refresh(){
+        this.TotalWater = super.getCapacity();
     }
 
 }
