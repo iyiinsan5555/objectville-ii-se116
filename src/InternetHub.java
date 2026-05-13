@@ -20,7 +20,7 @@ public class InternetHub extends UtilityProvider{
     }
 
     @Override
-    public void resetUtility() {
+    public void refresh() {
         this.totalInternet = super.getCapacity();
     }
 }
