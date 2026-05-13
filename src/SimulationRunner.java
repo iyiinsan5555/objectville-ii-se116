@@ -42,6 +42,7 @@ public class SimulationRunner {
 
     public void run() {
         for (int i=0; i<nTicks; i++) {
+            System.out.println("Tick " + (i+1)); //saw in sample output
             this.tick(); //tick() for number of ticks
         }
     }
