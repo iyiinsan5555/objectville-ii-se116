@@ -55,8 +55,8 @@ public class GridManager {
         int x = root.getX();
         int y = root.getY();
 
-        //I only check adjacent points. Should we check 8-neighborhood ??? There is an ambiguity, right? Check project documentation.
-        Point[] neighborPoints = {new Point(x, y + 1), new Point(x, y - 1), new Point(x + 1 , y), new Point(x - 1, y)};
+        //Change it to 8-neighborhood!!!
+        Point[] neighborPoints = {new Point(x, y + 1), new Point(x, y - 1), new Point(x + 1 , y), new Point(x - 1, y), new Point(x + 1, y + 1), new Point(x - 1, y - 1), new Point(x + 1, y - 1), new Point(x - 1, y - 1)};
 
         for (Point point : neighborPoints) {
             if (cellHashMap.containsKey(point)) {
