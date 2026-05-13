@@ -36,7 +36,7 @@ public class SimulationRunner {
         }
 
         //Step 5
-        resourceDistributor.distribute();
+        resourceDistributor.accumulate();
 
     }
 
