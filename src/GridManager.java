@@ -55,8 +55,7 @@ public class GridManager {
         int x = root.getX();
         int y = root.getY();
 
-        //Change it to 8-neighborhood!!!
-        Point[] neighborPoints = {new Point(x, y + 1), new Point(x, y - 1), new Point(x + 1 , y), new Point(x - 1, y), new Point(x + 1, y + 1), new Point(x - 1, y - 1), new Point(x + 1, y - 1), new Point(x - 1, y - 1)};
+        Point[] neighborPoints = {new Point(x, y + 1), new Point(x, y - 1), new Point(x + 1 , y), new Point(x - 1, y), new Point(x + 1, y + 1), new Point(x - 1, y - 1), new Point(x + 1, y - 1), new Point(x - 1, y + 1)};
 
         for (Point point : neighborPoints) {
             if (cellHashMap.containsKey(point)) {
