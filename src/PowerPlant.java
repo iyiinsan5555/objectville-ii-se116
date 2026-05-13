@@ -10,12 +10,17 @@ public class PowerPlant extends UtilityProvider{
         return totalElectric;
     }
 
-    // Resets Totol Amount After Every Tick
     public void setTotalElectric(int totalElectric) {
-        this.totalElectric = super.getCapacity();
+        this.totalElectric = totalElectric;
     }
-
+    
+    // When the resource is Consumed Simulation Runner can call this
     public void decTotalElectric(int amount) {
         totalElectric -= amount;
+    }
+
+    @Override
+    public void refresh(){
+        this.totalElectric = super.getCapacity();
     }
 }
