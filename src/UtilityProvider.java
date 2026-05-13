@@ -1,4 +1,4 @@
-public class UtilityProvider extends Cell{
+public abstract class UtilityProvider extends Cell{
     private final int capacity = 100;
 
     public UtilityProvider(int row, int column){
@@ -8,4 +8,7 @@ public class UtilityProvider extends Cell{
     public int getCapacity() {
         return capacity;
     }
+
+    public abstract void refresh();
+
 }
