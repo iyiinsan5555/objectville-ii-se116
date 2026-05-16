@@ -60,18 +60,27 @@ public class UtilityDistributor{
 
         return neighbors;
     }
+    
+    public void distribute() {
+        //note to self. add finder here and act accordingly as to not leave anything out
+        //there will be method callers to individual distributors.
 
+    }
 
-    Queue<Cell> unvisitedQ = new ArrayDeque<>();
-    ArrayList<Cell> visited = new ArrayList<>();
+    public void distributeWater(ArrayList<Cell> waterList){
+        waterList = waterProvList;
 
-    public void distribute(Cell startingCell) {
-        visited.add(startingCell);
-        unvisitedQ.add(startingCell);
+        Queue<Cell> unvisitedQ = new ArrayDeque<>();
+        ArrayList<Cell> visited = new ArrayList<>();
+        for(Cell startingCell: waterList){
+            visited.add(startingCell);
+            unvisitedQ.add(startingCell);
+        }
+
 
         while (!unvisitedQ.isEmpty()) {
             Cell current = unvisitedQ.remove(); //take the first element and stores in current
-            //this is where the distribution will happen
+            //this is where the unique distribution will happen
 
 
             ArrayList<Cell> neighbors = getNeighbors(current);
@@ -86,5 +95,59 @@ public class UtilityDistributor{
         }
     }
 
+    public void distributeInternet(ArrayList<Cell> intList){
+        intList = intProvList;
 
+        Queue<Cell> unvisitedQ = new ArrayDeque<>();
+        ArrayList<Cell> visited = new ArrayList<>();
+        for(Cell startingCell: intList){
+            visited.add(startingCell);
+            unvisitedQ.add(startingCell);
+        }
+
+
+        while (!unvisitedQ.isEmpty()) {
+            Cell current = unvisitedQ.remove(); //take the first element and stores in current
+            //this is where the unique distribution will happen
+
+
+            ArrayList<Cell> neighbors = getNeighbors(current);
+            //storing adjacent cells to the queue
+            for (Cell neighbor : neighbors) {
+                if (!visited.contains(neighbor)) {
+                    visited.add(neighbor);
+                    unvisitedQ.add(neighbor);
+
+                }
+            }
+        }
+    }
+
+    public void distributeElec(ArrayList<Cell> elecList){
+        elecList = elecProvList;
+
+        Queue<Cell> unvisitedQ = new ArrayDeque<>();
+        ArrayList<Cell> visited = new ArrayList<>();
+        for(Cell startingCell: elecList){
+            visited.add(startingCell);
+            unvisitedQ.add(startingCell);
+        }
+
+
+        while (!unvisitedQ.isEmpty()) {
+            Cell current = unvisitedQ.remove(); //take the first element and stores in current
+            //this is where the unique distribution will happen
+
+
+            ArrayList<Cell> neighbors = getNeighbors(current);
+            //storing adjacent cells to the queue
+            for (Cell neighbor : neighbors) {
+                if (!visited.contains(neighbor)) {
+                    visited.add(neighbor);
+                    unvisitedQ.add(neighbor);
+
+                }
+            }
+        }
+    }
 }
