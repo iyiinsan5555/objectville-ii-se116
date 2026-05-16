@@ -15,13 +15,13 @@ public class ServiceDistributor {
                 if (s.getLocation().distanceTo(z.getLocation()) <= s.getRadius()){
                     switch (s.getServiceType()){
                         case "PoliceStation":
-                            z.setSecurity(true);
+                            z.setHasSecurity(true);
                             break;
                         case "Hospital":
-                            z.setHealth(true);
+                            z.setHasHealth(true); // minor error in calling setters
                             break;
                         case "School":
-                            z.setEducation(true);
+                            z.setHasEducation(true);
                             break;
                     }
                 }

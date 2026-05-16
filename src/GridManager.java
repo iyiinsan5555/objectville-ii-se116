@@ -28,9 +28,9 @@ public class GridManager {
         return cellArrayList;
     }
 
-    public ArrayList<Cell> getZones() {
+    public ArrayList<Zone> getZones() {
         return zones;
-    }
+    } // changed into appropriate object since Zone is active now
 
     public ArrayList<UtilityProvider> getUtilityProviders() {
         return utilityProviders;

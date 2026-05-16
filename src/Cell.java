@@ -1,12 +1,7 @@
-public abstract class Cell implements Transferable{
+public abstract class Cell {
     private int x;
     private int y;
     private Point location;
-
-    @Override
-    public boolean isTransferable() {
-        return true;
-    }
 
 
     public Cell(int x, int y){

@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class UtilityDistributor{
 
@@ -14,15 +12,12 @@ public class UtilityDistributor{
         }
     }
 
-    private ArrayList<Cell> visited = new ArrayList<>();
-    private ArrayList<Cell> unvisited = new ArrayList<>();
-
     private Map<Point,Cell> grid = new HashMap<>();
 
-    public ArrayList<Cell> getNeighbors(Cell cell) {
+    public ArrayList<Cell> getNeighbors(Cell start) {
         ArrayList<Cell> neighbors = new ArrayList<>();
 
-        Point p = cell.getLocation();
+        Point p = start.getLocation();
         int x = p.getX();
         int y = p.getY();
 
@@ -35,19 +30,40 @@ public class UtilityDistributor{
         Cell west = grid.get(new Point(x - 1,y));
         Cell northWest = grid.get(new Point( x - 1, y + 1));
 
-        if (north != null || north.isTransferable()) neighbors.add(north);
-        if(northEast != null || northEast.isTransferable()) neighbors.add(northEast);
-        if (east != null|| east.isTransferable()) neighbors.add(east);
-        if(southEast != null || southEast.isTransferable()) neighbors.add(southEast);
-        if (south != null || south.isTransferable()) neighbors.add(south);
-        if(southWest != null|| southWest.isTransferable()) neighbors.add(southWest);
-        if(west != null|| west.isTransferable()) neighbors.add(west);
-        if(northWest != null|| northWest.isTransferable()) neighbors.add(northWest);
+        if (north != null || north instanceof Transferable) neighbors.add(north);
+        if(northEast != null || northEast instanceof Transferable) neighbors.add(northEast);
+        if (east != null|| east instanceof Transferable) neighbors.add(east);
+        if(southEast != null || southEast instanceof Transferable) neighbors.add(southEast);
+        if (south != null || south instanceof Transferable) neighbors.add(south);
+        if(southWest != null|| southWest instanceof Transferable) neighbors.add(southWest);
+        if(west != null|| west instanceof Transferable) neighbors.add(west);
+        if(northWest != null|| northWest instanceof Transferable) neighbors.add(northWest);
 
         return neighbors;
     }
 
-    public void distribute(Cell startingCell){
 
+    Queue<Cell> unvisitedQ = new ArrayDeque<>();
+    ArrayList<Cell> visited = new ArrayList<>();
+
+    public void distribute(Cell startingCell) {
+        visited.add(startingCell);
+        unvisitedQ.add(startingCell);
+
+        while (!unvisitedQ.isEmpty()) {
+            Cell current = unvisitedQ.remove(); //take the first element and stores in current
+
+
+
+            ArrayList<Cell> neighbors = getNeighbors(current);
+            //storing adjacent cells to the queue
+            for (Cell neighbor : neighbors) {
+                if (!visited.contains(neighbor)) {
+                    visited.add(neighbor);
+                    unvisitedQ.add(neighbor);
+
+                }
+            }
+        }
     }
 }

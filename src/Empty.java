@@ -4,8 +4,4 @@ public class Empty extends Cell{
         super(x, y);
     }
 
-    @Override
-    public boolean isTransferable() {
-        return false;
-    }
 }

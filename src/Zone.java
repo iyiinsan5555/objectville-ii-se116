@@ -1,4 +1,4 @@
-public abstract class Zone extends Cell{
+public abstract class Zone extends Cell implements Transferable{
     private int level;
     private int utilityDemand;
     private int output;
