@@ -6,13 +6,33 @@ public class Housing extends Zone{
         this.receivedLifestyle = 0;
     }
 
+    /*
+    Runs the per-tick simulation logic for the housing zone.
+    It updates output, demand, and level status in order.
+     */
     @Override
     public void update() {
+        this.setOutput(calculateOutput());
+        this.setUtilityDemand(Math.max(1, this.getOutput()));
+        updateLevel();
 
+        this.resetData();
     }
 
+    /*
+     Resets the temporary resources and services.
+     This prepares the zone for the next simulation tick.
+     */
     @Override
     public void resetData() {
+        this.setReceivedElectricity(0);
+        this.setReceivedWater(0);
+        this.setReceivedInternet(0);
+        this.receivedLifestyle = 0;
+
+        this.setHasSecurity(false);
+        this.setHasEducation(false);
+        this.setHasHealth(false);
 
     }
 
@@ -32,12 +52,59 @@ public class Housing extends Zone{
     @Override
     public int calculateOutput() {
         int m = getM();
-        // Lifestyle points enhance the total population output.
-        return (this.getLevel() + 1) * m + receivedLifestyle;
+
+        switch (this.getLevel()) {
+            case 1:
+                return m;
+            case 2:
+                return 2 * m;
+            case 3:
+                return (2 * m) + this.receivedLifestyle;
+            default:
+                return 0; // Level 0 produces 0 population
+        }
     }
 
+    //Updates the level of the housing zone based on received services and utilities.
     @Override
     public void updateLevel() {
+        int m = getM();
 
+        if (m == 0) {
+            this.setLevel(0);
+            return;
+        }
+
+        int currentLevel = this.getLevel();
+
+        if (currentLevel == 0) {
+            // Level 1 only requires basic utilities (m > 0)
+            this.setLevel(1);
+        } else if (currentLevel == 1) {
+            // Check if it qualifies to upgrade to Level 2
+            if (this.isHasSecurity() && this.isHasHealth() && this.isHasEducation()) {
+                this.setLevel(2);
+            }
+        } else if (currentLevel == 2) {
+            // Gradual fall: if it loses any required service, it drops back to Level 1
+            if (!this.isHasSecurity() || !this.isHasHealth() || !this.isHasEducation()) {
+                this.setLevel(1);
+            } else if (this.receivedLifestyle > 0) {
+                this.setLevel(3);
+            }
+        } else if (currentLevel == 3) {
+            // Gradual fall: if it loses lifestyle or any service, it drops back to Level 2
+            if (this.receivedLifestyle == 0 || !this.isHasSecurity() || !this.isHasHealth() || !this.isHasEducation()) {
+                this.setLevel(2);
+            }
+        }
+    }
+
+    // Getter & Setter
+    public int getReceivedLifestyle() {
+        return receivedLifestyle;
+    }
+    public void setReceivedLifestyle(int receivedLifestyle) {
+        this.receivedLifestyle = receivedLifestyle;
     }
 }
