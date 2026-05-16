@@ -14,6 +14,25 @@ public class UtilityDistributor{
 
     private Map<Point,Cell> grid = new HashMap<>();
 
+
+    //lists for each provider type. ı will then put a seperate individual distributor method. and call those in the main distributor.
+    ArrayList<Cell> waterProvList = new ArrayList<>();
+    ArrayList<Cell> intProvList = new ArrayList<>();
+    ArrayList<Cell> elecProvList = new ArrayList<>();
+
+    public void findProviders(){
+
+        for (Cell cell : grid.values()){
+            if(cell instanceof WaterPumpingStation){
+                waterProvList.add(cell);
+            } else if (cell instanceof InternetHub) {
+                intProvList.add(cell);
+            } else if (cell instanceof PowerPlant) {
+                elecProvList.add(cell);
+            }
+        }
+    }
+
     public ArrayList<Cell> getNeighbors(Cell start) {
         ArrayList<Cell> neighbors = new ArrayList<>();
 
@@ -52,7 +71,7 @@ public class UtilityDistributor{
 
         while (!unvisitedQ.isEmpty()) {
             Cell current = unvisitedQ.remove(); //take the first element and stores in current
-
+            //this is where the distribution will happen
 
 
             ArrayList<Cell> neighbors = getNeighbors(current);
@@ -66,4 +85,6 @@ public class UtilityDistributor{
             }
         }
     }
+
+
 }
