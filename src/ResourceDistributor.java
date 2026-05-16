@@ -94,4 +94,82 @@ public class ResourceDistributor {
             }
         }
     }
+
+    /*
+    Accumulate Production
+    Resets the central global resource pools and aggregates the new outputs calculated by each zone type.
+     */
+    public void accumulate() {
+        // Clear all previous central resource pools to prepare for fresh data collection
+        this.totalPopulation = 0;
+        this.totalGoods = 0;
+        this.totalLifestyle = 0;
+
+        // Re-run zone counter in case zones were added, modified, or demolished mid-tick
+        countZones();
+
+        // Accumulate production outputs strictly matching the specific resource each zone creates
+        for (Zone zone : zones) {
+            if (zone instanceof Housing) {
+                // Housing generates Population; accumulate output to totalPopulation pool
+                this.totalPopulation += zone.getOutput();
+            } else if (zone instanceof Industrial) {
+                // Industrial generates Goods; accumulate output to totalGoods pool
+                this.totalGoods += zone.getOutput();
+            } else if (zone instanceof Commercial) {
+                // Commercial generates Lifestyle; accumulate output to totalLifestyle pool
+                this.totalLifestyle += zone.getOutput();
+            }
+        }
+    }
+
+    // Getters & Setters
+    public int getTotalPopulation() {
+        return totalPopulation;
+    }
+    public void setTotalPopulation(int totalPopulation) {
+        this.totalPopulation = totalPopulation;
+    }
+    public int getTotalGoods() {
+        return totalGoods;
+    }
+    public void setTotalGoods(int totalGoods) {
+        this.totalGoods = totalGoods;
+    }
+    public int getTotalLifestyle() {
+        return totalLifestyle;
+    }
+    public void setTotalLifestyle(int totalLifestyle) {
+        this.totalLifestyle = totalLifestyle;
+    }
+    public int getTotalHousing() {
+        return totalHousing;
+    }
+    public void setTotalHousing(int totalHousing) {
+        this.totalHousing = totalHousing;
+    }
+    public int getTotalCommercial() {
+        return totalCommercial;
+    }
+    public void setTotalCommercial(int totalCommercial) {
+        this.totalCommercial = totalCommercial;
+    }
+    public int getTotalIndustrial() {
+        return totalIndustrial;
+    }
+    public void setTotalIndustrial(int totalIndustrial) {
+        this.totalIndustrial = totalIndustrial;
+    }
+    public ArrayList<Cell> getCellsArrayList() {
+        return cellsArrayList;
+    }
+    public void setCellsArrayList(ArrayList<Cell> cellsArrayList) {
+        this.cellsArrayList = cellsArrayList;
+    }
+    public ArrayList<Zone> getZones() {
+        return zones;
+    }
+    public void setZones(ArrayList<Zone> zones) {
+        this.zones = zones;
+    }
 }
