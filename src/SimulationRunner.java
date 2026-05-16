@@ -15,7 +15,7 @@ public class SimulationRunner {
         gridManager = new GridManager(mapReader.readMap(mapPath)); //reads the map and return the cellArrayList
         serviceDistributor = new ServiceDistributor(gridManager.getZones(), gridManager.getServiceProviders());
         utilityDistributor = new UtilityDistributor(gridManager.getCellArrayList(), gridManager.getCellHashMap());
-        resourceDistributor = new ResourceDistributor(gridManager.cellArrayList, gridManager.zones);
+        resourceDistributor = new ResourceDistributor(gridManager.getCellArrayList(), gridManager.getZones());
     }
 
 
