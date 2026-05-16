@@ -88,6 +88,10 @@ public class Industrial extends Zone{
             if (this.receivedPopulation > 0 && this.isHasSecurity()) {
                 this.setLevel(2);
             }
+            //Gradual fall to Level 0 if it loses workers
+            else if (this.receivedPopulation == 0) {
+                this.setLevel(0);
+            }
         }
         else if (currentLevel == 2) {
             // If it loses security or workers, it drops back to Level 1
