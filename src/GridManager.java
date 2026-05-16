@@ -3,8 +3,7 @@ import java.util.HashMap;
 
 public class GridManager {
     ArrayList<Cell> cellArrayList;
-    HashMap<Point, Cell> cellHashMap;
-    ArrayList<Cell> zones;
+    ArrayList<Zone> zones;
     ArrayList<UtilityProvider> utilityProviders;
     ArrayList<ServiceProvider> serviceProviders;
 
@@ -12,13 +11,11 @@ public class GridManager {
         this.cellArrayList = cellArrayList;
 
         //Implementing other fields
-        cellHashMap = new HashMap<>();
         zones = new ArrayList<>();
         utilityProviders = new ArrayList<>();
         serviceProviders = new ArrayList<>();
 
         for (Cell cell : cellArrayList) {
-            cellHashMap.put(cell.getLocation(), cell);
             if (cell instanceof Zone) {zones.add( (Zone) cell);}
             else if (cell instanceof UtilityProvider) {utilityProviders.add( (UtilityProvider) cell);}
             else if (cell instanceof ServiceProvider) {serviceProviders.add( (ServiceProvider) cell);}
@@ -29,10 +26,6 @@ public class GridManager {
     //Getters
     public ArrayList<Cell> getCellArrayList() {
         return cellArrayList;
-    }
-
-    public HashMap<Point, Cell> getCellHashMap() {
-        return cellHashMap;
     }
 
     public ArrayList<Cell> getZones() {
@@ -48,25 +41,5 @@ public class GridManager {
     }
 
     //Static Methods (Util Methods)
-    public static ArrayList<Cell> getNeighbors(HashMap<Point, Cell> cellHashMap, Cell cell) {
-        ArrayList<Cell> neighbors = new ArrayList<>();
-
-        Point root = cell.getLocation();
-        int x = root.getX();
-        int y = root.getY();
-
-        Point[] neighborPoints = {new Point(x, y + 1), new Point(x, y - 1), new Point(x + 1 , y), new Point(x - 1, y), new Point(x + 1, y + 1), new Point(x - 1, y - 1), new Point(x + 1, y - 1), new Point(x - 1, y + 1)};
-
-        for (Point point : neighborPoints) {
-            if (cellHashMap.containsKey(point)) {
-                Cell neigborCell = cellHashMap.get(point);
-
-                if (neigborCell instanceof Transferable) {
-                    neighbors.add(neigborCell);
-                }
-            }
-        }
-
-        return neighbors;
-    }
+    //getNeighbors() needs fix. At the moment should not use HashMap because it gives undesired results
 }
