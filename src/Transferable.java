@@ -1,3 +1,1 @@
-public interface Transferable {
-
-}
+public interface Transferable {}
