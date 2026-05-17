@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Point {
     private int x;
     private int y;
@@ -29,30 +31,38 @@ public class Point {
     public double distanceTo(Point other){
         int distanceX = other.getX() - this.x;
         int distanceY = other.getY() - this.y;
-        int totalDist = (int) Math.sqrt(distanceY*distanceY + distanceX*distanceX);
-        return totalDist;
+
+        return Math.sqrt(distanceY*distanceY + distanceX*distanceX);
     }
-    //in case we need it...
+
     @Override
     public String toString() {
-        return "Point{" +
-                "x=" + x +
-                ", y=" + y +
-                '}';
+        return "("+ x + ", " + y + ")";
     }
 
-    //needed to make sure hashmap sees this class
+    //HashMap uses this to distinguish objects of Point class
+    //Reference: https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#equals-java.lang.Object-
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Point)) return false;
+    public boolean equals(Object object) {
 
-        Point point = (Point) o;
-        return x == point.x && y == point.y;
+        if (!(object instanceof Point)) {
+            return false; //the object is not an instance of Point
+        }
+        else if (this == object) {
+            return true; //they point to the same mem. location (same reference)
+        }
+
+        Point otherPoint = (Point) object;
+        return x == otherPoint.getX() && y == otherPoint.getY(); //we are comparing the points x & y fields to conclude that they are same or not
     }
-    // same reason as equals'
+
+    //This is a hashing function to help HashMap to distinguish points
+    //References:
+    //https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#hashCode--
+    //https://docs.oracle.com/javase/8/docs/api/java/util/Objects.html#hash-java.lang.Object...-
+    //Check this video to understand comprehensively: https://www.youtube.com/watch?v=FsfRsGFHuv4
     @Override
     public int hashCode() {
-        return 31 * x + y;
+        return Objects.hash(x, y); //we are letting java generate hash code.
     }
 }
