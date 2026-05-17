@@ -16,19 +16,22 @@ public class UtilityDistributor{
 
 
     //lists for each provider type. ı will then put a seperate individual distributor method. and call those in the main distributor.
-    ArrayList<Cell> waterProvList = new ArrayList<>();
-    ArrayList<Cell> intProvList = new ArrayList<>();
-    ArrayList<Cell> elecProvList = new ArrayList<>();
+    ArrayList<WaterPumpingStation> waterProvList = new ArrayList<>();
+    ArrayList<InternetHub> intProvList = new ArrayList<>();
+    ArrayList<PowerPlant> elecProvList = new ArrayList<>();
 
     public void findProviders(){
+        waterProvList.clear();
+        intProvList.clear();
+        elecProvList.clear();
 
         for (Cell cell : grid.values()){
             if(cell instanceof WaterPumpingStation){
-                waterProvList.add(cell);
+                waterProvList.add((WaterPumpingStation) cell);
             } else if (cell instanceof InternetHub) {
-                intProvList.add(cell);
+                intProvList.add((InternetHub) cell);
             } else if (cell instanceof PowerPlant) {
-                elecProvList.add(cell);
+                elecProvList.add((PowerPlant) cell);
             }
         }
     }
@@ -60,94 +63,129 @@ public class UtilityDistributor{
 
         return neighbors;
     }
-    
+
     public void distribute() {
         //note to self. add finder here and act accordingly as to not leave anything out
         //there will be method callers to individual distributors.
 
     }
 
-    public void distributeWater(ArrayList<Cell> waterList){
+    public void distributeWater(ArrayList<WaterPumpingStation> waterList){
         waterList = waterProvList;
 
         Queue<Cell> unvisitedQ = new ArrayDeque<>();
         ArrayList<Cell> visited = new ArrayList<>();
-        for(Cell startingCell: waterList){
+        for(WaterPumpingStation startingCell: waterList){
             visited.add(startingCell);
             unvisitedQ.add(startingCell);
-        }
 
+            int totWater = startingCell.getTotalWater();
 
-        while (!unvisitedQ.isEmpty()) {
-            Cell current = unvisitedQ.remove(); //take the first element and stores in current
-            //this is where the unique distribution will happen
+            while (!unvisitedQ.isEmpty() && totWater>0) {
+                Cell current = unvisitedQ.remove(); //take the first element and stores in current
+                //this is where the unique distribution will happen
+                if(current instanceof Housing){
+                    totWater--;
+                    ((Housing) current).setReceivedWater(1);
+                } else if (current instanceof Commercial) {
+                    totWater--;
+                    ((Commercial) current).setReceivedWater(1);
+                } else if (current instanceof Industrial) {
+                    totWater--;
+                    ((Industrial) current).setReceivedWater(1);
+                }
 
+                ArrayList<Cell> neighbors = getNeighbors(current);
+                //storing adjacent cells to the queue
+                for (Cell neighbor : neighbors) {
+                    if (!visited.contains(neighbor)) {
+                        visited.add(neighbor);
+                        unvisitedQ.add(neighbor);
 
-            ArrayList<Cell> neighbors = getNeighbors(current);
-            //storing adjacent cells to the queue
-            for (Cell neighbor : neighbors) {
-                if (!visited.contains(neighbor)) {
-                    visited.add(neighbor);
-                    unvisitedQ.add(neighbor);
-
+                    }
                 }
             }
         }
+
+
+
     }
 
-    public void distributeInternet(ArrayList<Cell> intList){
+    public void distributeInternet(ArrayList<InternetHub> intList){
         intList = intProvList;
 
         Queue<Cell> unvisitedQ = new ArrayDeque<>();
         ArrayList<Cell> visited = new ArrayList<>();
-        for(Cell startingCell: intList){
+        for(InternetHub startingCell: intList){
             visited.add(startingCell);
             unvisitedQ.add(startingCell);
-        }
+
+            int totInt = startingCell.getTotalInternet();
+
+            while (!unvisitedQ.isEmpty() && totInt>0) {
+                Cell current = unvisitedQ.remove(); //take the first element and stores in current
+                //this is where the unique distribution will happen
+                if(current instanceof Housing){
+                    totInt--;
+                    ((Housing) current).setReceivedInternet(1);
+                } else if(current instanceof Commercial){
+                    totInt--;
+                    ((Commercial) current).setReceivedInternet(1);
+                }
 
 
-        while (!unvisitedQ.isEmpty()) {
-            Cell current = unvisitedQ.remove(); //take the first element and stores in current
-            //this is where the unique distribution will happen
 
+                ArrayList<Cell> neighbors = getNeighbors(current);
+                //storing adjacent cells to the queue
+                for (Cell neighbor : neighbors) {
+                    if (!visited.contains(neighbor)) {
+                        visited.add(neighbor);
+                        unvisitedQ.add(neighbor);
 
-            ArrayList<Cell> neighbors = getNeighbors(current);
-            //storing adjacent cells to the queue
-            for (Cell neighbor : neighbors) {
-                if (!visited.contains(neighbor)) {
-                    visited.add(neighbor);
-                    unvisitedQ.add(neighbor);
-
+                    }
                 }
             }
         }
     }
 
-    public void distributeElec(ArrayList<Cell> elecList){
+    public void distributeElec(ArrayList<PowerPlant> elecList){
         elecList = elecProvList;
 
         Queue<Cell> unvisitedQ = new ArrayDeque<>();
         ArrayList<Cell> visited = new ArrayList<>();
-        for(Cell startingCell: elecList){
+        for(PowerPlant startingCell: elecList){
             visited.add(startingCell);
             unvisitedQ.add(startingCell);
-        }
 
+            int totElec = startingCell.getTotalElectric();
 
-        while (!unvisitedQ.isEmpty()) {
-            Cell current = unvisitedQ.remove(); //take the first element and stores in current
-            //this is where the unique distribution will happen
+            while (!unvisitedQ.isEmpty() && totElec>0) {
+                Cell current = unvisitedQ.remove(); //take the first element and stores in current
+                //this is where the unique distribution will happen
+                if(current instanceof Housing){
+                    totElec--;
+                    ((Housing) current).setReceivedElectricity(1);
+                } else if (current instanceof Industrial) {
+                    totElec--;
+                    ((Industrial) current).setReceivedElectricity(1);
+                } else if (current instanceof Commercial) {
+                    totElec--;
+                    ((Commercial) current).setReceivedElectricity(1);
+                }
 
+                ArrayList<Cell> neighbors = getNeighbors(current);
+                //storing adjacent cells to the queue
+                for (Cell neighbor : neighbors) {
+                    if (!visited.contains(neighbor)) {
+                        visited.add(neighbor);
+                        unvisitedQ.add(neighbor);
 
-            ArrayList<Cell> neighbors = getNeighbors(current);
-            //storing adjacent cells to the queue
-            for (Cell neighbor : neighbors) {
-                if (!visited.contains(neighbor)) {
-                    visited.add(neighbor);
-                    unvisitedQ.add(neighbor);
-
+                    }
                 }
             }
+
         }
+
+
     }
 }
