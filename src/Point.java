@@ -60,6 +60,7 @@ public class Point {
     //References:
     //https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#hashCode--
     //https://docs.oracle.com/javase/8/docs/api/java/util/Objects.html#hash-java.lang.Object...-
+    //Check this video to understand comprehensively: https://www.youtube.com/watch?v=FsfRsGFHuv4
     @Override
     public int hashCode() {
         return Objects.hash(x, y); //we are letting java generate hash code.
