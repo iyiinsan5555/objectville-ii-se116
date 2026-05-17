@@ -65,17 +65,19 @@ public class UtilityDistributor{
     }
 
     public void distribute() {
-        //note to self. add finder here and act accordingly as to not leave anything out
-        //there will be method callers to individual distributors.
+        findProviders();
+        distributeInternet();
+        distributeWater();
+        distributeElec();
 
     }
 
-    public void distributeWater(ArrayList<WaterPumpingStation> waterList){
-        waterList = waterProvList;
+    public void distributeWater(){
+
 
         Queue<Cell> unvisitedQ = new ArrayDeque<>();
         ArrayList<Cell> visited = new ArrayList<>();
-        for(WaterPumpingStation startingCell: waterList){
+        for(WaterPumpingStation startingCell: waterProvList){
             visited.add(startingCell);
             unvisitedQ.add(startingCell);
 
@@ -84,13 +86,13 @@ public class UtilityDistributor{
             while (!unvisitedQ.isEmpty() && totWater>0) {
                 Cell current = unvisitedQ.remove(); //take the first element and stores in current
                 //this is where the unique distribution will happen
-                if(current instanceof Housing){
+                if(current instanceof Housing &&((Housing) current).getReceivedWater()<1){
                     totWater--;
                     ((Housing) current).setReceivedWater(1);
-                } else if (current instanceof Commercial) {
+                } else if (current instanceof Commercial && ((Commercial) current).getReceivedWater()<1) {
                     totWater--;
                     ((Commercial) current).setReceivedWater(1);
-                } else if (current instanceof Industrial) {
+                } else if (current instanceof Industrial &&((Industrial) current).getReceivedWater()<1) {
                     totWater--;
                     ((Industrial) current).setReceivedWater(1);
                 }
@@ -111,12 +113,11 @@ public class UtilityDistributor{
 
     }
 
-    public void distributeInternet(ArrayList<InternetHub> intList){
-        intList = intProvList;
+    public void distributeInternet(){
 
         Queue<Cell> unvisitedQ = new ArrayDeque<>();
         ArrayList<Cell> visited = new ArrayList<>();
-        for(InternetHub startingCell: intList){
+        for(InternetHub startingCell: intProvList){
             visited.add(startingCell);
             unvisitedQ.add(startingCell);
 
@@ -125,10 +126,10 @@ public class UtilityDistributor{
             while (!unvisitedQ.isEmpty() && totInt>0) {
                 Cell current = unvisitedQ.remove(); //take the first element and stores in current
                 //this is where the unique distribution will happen
-                if(current instanceof Housing){
+                if(current instanceof Housing && ((Housing) current).getReceivedInternet()<1){
                     totInt--;
                     ((Housing) current).setReceivedInternet(1);
-                } else if(current instanceof Commercial){
+                } else if(current instanceof Commercial && ((Commercial) current).getReceivedInternet()<1){
                     totInt--;
                     ((Commercial) current).setReceivedInternet(1);
                 }
@@ -148,12 +149,11 @@ public class UtilityDistributor{
         }
     }
 
-    public void distributeElec(ArrayList<PowerPlant> elecList){
-        elecList = elecProvList;
+    public void distributeElec(){
 
         Queue<Cell> unvisitedQ = new ArrayDeque<>();
         ArrayList<Cell> visited = new ArrayList<>();
-        for(PowerPlant startingCell: elecList){
+        for(PowerPlant startingCell: elecProvList){
             visited.add(startingCell);
             unvisitedQ.add(startingCell);
 
@@ -162,13 +162,13 @@ public class UtilityDistributor{
             while (!unvisitedQ.isEmpty() && totElec>0) {
                 Cell current = unvisitedQ.remove(); //take the first element and stores in current
                 //this is where the unique distribution will happen
-                if(current instanceof Housing){
+                if(current instanceof Housing && ((Housing) current).getReceivedElectricity()<1){
                     totElec--;
                     ((Housing) current).setReceivedElectricity(1);
-                } else if (current instanceof Industrial) {
+                } else if (current instanceof Industrial && ((Industrial) current).getReceivedElectricity()<1) {
                     totElec--;
                     ((Industrial) current).setReceivedElectricity(1);
-                } else if (current instanceof Commercial) {
+                } else if (current instanceof Commercial && ((Commercial) current).getReceivedElectricity()<1) {
                     totElec--;
                     ((Commercial) current).setReceivedElectricity(1);
                 }
