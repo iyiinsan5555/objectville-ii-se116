@@ -1,151 +1,131 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.HashSet;
 
-public class UtilityDistributor{
+public class UtilityDistributor {
+    private ArrayList<Cell> cellArrayList;
+    private HashMap<Point, Cell> cellHashMap;
+    private ArrayList<UtilityProvider> utilityProviders;
 
-    private ArrayList<Cell> cellArrayList = new ArrayList<>();
-
-    public UtilityDistributor(ArrayList<Cell> cellArrayList) {
+    public UtilityDistributor(ArrayList<Cell> cellArrayList, HashMap<Point, Cell> cellHashMap, ArrayList<UtilityProvider> utilityProviders) {
         this.cellArrayList = cellArrayList;
-
-        for (Cell cell : cellArrayList) {
-            grid.put(cell.getLocation(), cell);
-        }
+        this.cellHashMap = cellHashMap;
+        this.utilityProviders = utilityProviders;
     }
 
-    private Map<Point,Cell> grid = new HashMap<>();
-
-
-    //lists for each provider type. ı will then put a seperate individual distributor method. and call those in the main distributor.
-    ArrayList<Cell> waterProvList = new ArrayList<>();
-    ArrayList<Cell> intProvList = new ArrayList<>();
-    ArrayList<Cell> elecProvList = new ArrayList<>();
-
-    public void findProviders(){
-
-        for (Cell cell : grid.values()){
-            if(cell instanceof WaterPumpingStation){
-                waterProvList.add(cell);
-            } else if (cell instanceof InternetHub) {
-                intProvList.add(cell);
-            } else if (cell instanceof PowerPlant) {
-                elecProvList.add(cell);
-            }
-        }
-    }
-
-    public ArrayList<Cell> getNeighbors(Cell start) {
-        ArrayList<Cell> neighbors = new ArrayList<>();
-
-        Point p = start.getLocation();
-        int x = p.getX();
-        int y = p.getY();
-
-        Cell north    = grid.get(new Point(x, y + 1));
-        Cell northEast = grid.get(new Point(x + 1,y + 1));
-        Cell east = grid.get(new Point(x + 1, y));
-        Cell southEast = grid.get(new Point(x + 1, y - 1));
-        Cell south = grid.get(new Point( x,y - 1));
-        Cell southWest = grid.get(new Point(x - 1,y - 1));
-        Cell west = grid.get(new Point(x - 1,y));
-        Cell northWest = grid.get(new Point( x - 1, y + 1));
-
-        if (north != null || north instanceof Transferable) neighbors.add(north);
-        if(northEast != null || northEast instanceof Transferable) neighbors.add(northEast);
-        if (east != null|| east instanceof Transferable) neighbors.add(east);
-        if(southEast != null || southEast instanceof Transferable) neighbors.add(southEast);
-        if (south != null || south instanceof Transferable) neighbors.add(south);
-        if(southWest != null|| southWest instanceof Transferable) neighbors.add(southWest);
-        if(west != null|| west instanceof Transferable) neighbors.add(west);
-        if(northWest != null|| northWest instanceof Transferable) neighbors.add(northWest);
-
-        return neighbors;
-    }
-    
     public void distribute() {
-        //note to self. add finder here and act accordingly as to not leave anything out
-        //there will be method callers to individual distributors.
-
+        for (UtilityProvider provider : utilityProviders) {
+            if (provider instanceof PowerPlant) {
+                distributeBFS((PowerPlant) provider);
+            } else if (provider instanceof WaterPumpingStation) {
+                distributeBFS((WaterPumpingStation) provider);
+            } else if (provider instanceof InternetHub) {
+                distributeBFS((InternetHub) provider);
+            }
+        }
     }
 
-    public void distributeWater(ArrayList<Cell> waterList){
-        waterList = waterProvList;
+    /*
 
-        Queue<Cell> unvisitedQ = new ArrayDeque<>();
-        ArrayList<Cell> visited = new ArrayList<>();
-        for(Cell startingCell: waterList){
-            visited.add(startingCell);
-            unvisitedQ.add(startingCell);
-        }
+    BFS logic is done below. What it does?
+    I overloaded for each UtilityProvider type for our ease. (Type casting was horrible looking)
 
+    Used Queue data type because --> FIFO (First In First Out)
+    Used HashSet data type because --> it runs in constant time
+    We have overwritten equals() & hashCode in Point class so it is okay to use HashSet.
+    Check: https://docs.oracle.com/javase/8/docs/api/java/util/HashSet.html#contains-java.lang.Object-
 
-        while (!unvisitedQ.isEmpty()) {
-            Cell current = unvisitedQ.remove(); //take the first element and stores in current
-            //this is where the unique distribution will happen
+    The logic:
+    We first look at to the first element in the queue.
+    If it is a zone --> consumes
+    Then until the total utility is consumed or all possible paths are checked:
+        --> get neighbors, if not visited add to queue and hashSet
+        --> the zones in the queue consumes
+        --> repeat
 
+     */
 
-            ArrayList<Cell> neighbors = getNeighbors(current);
-            //storing adjacent cells to the queue
-            for (Cell neighbor : neighbors) {
+    private void distributeBFS(PowerPlant powerPlant) {
+
+        Queue<Cell> queue = new LinkedList<>();
+        HashSet<Cell> visited = new HashSet<>();
+
+        queue.add(powerPlant);
+        visited.add(powerPlant);
+
+        while (!queue.isEmpty() && powerPlant.getTotalElectric() > 0) {
+            Cell current = queue.poll();
+
+            if (current instanceof Zone) {
+                Zone zone = (Zone) current;
+                int consumed = Math.min(zone.getUtilityDemand(), powerPlant.getTotalElectric());
+
+                zone.setReceivedElectricity(zone.getReceivedElectricity() + consumed);
+                powerPlant.decTotalElectric(consumed);
+            }
+
+            for (Cell neighbor : GridManager.getNeighbors(current, cellHashMap)) {
                 if (!visited.contains(neighbor)) {
                     visited.add(neighbor);
-                    unvisitedQ.add(neighbor);
-
+                    queue.add(neighbor);
                 }
             }
         }
     }
 
-    public void distributeInternet(ArrayList<Cell> intList){
-        intList = intProvList;
+    private void distributeBFS(WaterPumpingStation waterPumpingStation) {
 
-        Queue<Cell> unvisitedQ = new ArrayDeque<>();
-        ArrayList<Cell> visited = new ArrayList<>();
-        for(Cell startingCell: intList){
-            visited.add(startingCell);
-            unvisitedQ.add(startingCell);
-        }
+        Queue<Cell> queue = new LinkedList<>();
+        HashSet<Cell> visited = new HashSet<>();
 
+        queue.add(waterPumpingStation);
+        visited.add(waterPumpingStation);
 
-        while (!unvisitedQ.isEmpty()) {
-            Cell current = unvisitedQ.remove(); //take the first element and stores in current
-            //this is where the unique distribution will happen
+        while (!queue.isEmpty() && waterPumpingStation.getTotalWater() > 0) {
+            Cell current = queue.poll();
 
+            if (current instanceof Zone) {
+                Zone zone = (Zone) current;
+                int consumed = Math.min(zone.getUtilityDemand(), waterPumpingStation.getTotalWater());
 
-            ArrayList<Cell> neighbors = getNeighbors(current);
-            //storing adjacent cells to the queue
-            for (Cell neighbor : neighbors) {
+                zone.setReceivedWater(zone.getReceivedWater() + consumed);
+                waterPumpingStation.decTotalWater(consumed);
+            }
+
+            for (Cell neighbor : GridManager.getNeighbors(current, cellHashMap)) {
                 if (!visited.contains(neighbor)) {
                     visited.add(neighbor);
-                    unvisitedQ.add(neighbor);
-
+                    queue.add(neighbor);
                 }
             }
         }
     }
 
-    public void distributeElec(ArrayList<Cell> elecList){
-        elecList = elecProvList;
+    private void distributeBFS(InternetHub internetHub) {
 
-        Queue<Cell> unvisitedQ = new ArrayDeque<>();
-        ArrayList<Cell> visited = new ArrayList<>();
-        for(Cell startingCell: elecList){
-            visited.add(startingCell);
-            unvisitedQ.add(startingCell);
-        }
+        Queue<Cell> queue = new LinkedList<>();
+        HashSet<Cell> visited = new HashSet<>();
 
+        queue.add(internetHub);
+        visited.add(internetHub);
 
-        while (!unvisitedQ.isEmpty()) {
-            Cell current = unvisitedQ.remove(); //take the first element and stores in current
-            //this is where the unique distribution will happen
+        while (!queue.isEmpty() && internetHub.getTotalInternet() > 0) {
+            Cell current = queue.poll();
 
+            if (current instanceof Zone) {
+                Zone zone = (Zone) current;
+                int consumed = Math.min(zone.getUtilityDemand(), internetHub.getTotalInternet());
 
-            ArrayList<Cell> neighbors = getNeighbors(current);
-            //storing adjacent cells to the queue
-            for (Cell neighbor : neighbors) {
+                zone.setReceivedInternet(zone.getReceivedInternet() + consumed);
+                internetHub.decTotalInternet(consumed);
+            }
+
+            for (Cell neighbor : GridManager.getNeighbors(current, cellHashMap)) {
                 if (!visited.contains(neighbor)) {
                     visited.add(neighbor);
-                    unvisitedQ.add(neighbor);
-
+                    queue.add(neighbor);
                 }
             }
         }

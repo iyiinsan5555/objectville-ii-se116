@@ -27,6 +27,10 @@ public class SimulationRunner {
         //Step 2
         utilityDistributor.distribute();
 
+        for (UtilityProvider utilityProvider : gridManager.getUtilityProviders()) {
+            utilityProvider.refresh();
+        }
+
         //Step 3
         resourceDistributor.distribute();
 
