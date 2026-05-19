@@ -2,20 +2,17 @@ import java.util.*;
 
 public class UtilityDistributor{
 
-    private ArrayList<Cell> cellArrayList = new ArrayList<>();
     private HashMap<Point, Cell> cellHashMap;
-    private ArrayList<UtilityProvider> utilityProviders;
 
     private ArrayList<WaterPumpingStation> waterProvList = new ArrayList<>();
     private ArrayList<InternetHub> intProvList = new ArrayList<>();
     private ArrayList<PowerPlant> elecProvList = new ArrayList<>();
 
 
-    public UtilityDistributor(ArrayList<Cell> cellArrayList, HashMap<Point, Cell> cellHashMap, ArrayList<UtilityProvider> utilityProviders) {
-        this.cellArrayList = cellArrayList;
-        this.cellHashMap = cellHashMap;
-        this.utilityProviders = utilityProviders;
+    public UtilityDistributor( HashMap<Point, Cell> cellHashMap, ArrayList<UtilityProvider> utilityProviders) {
 
+        this.cellHashMap = cellHashMap;
+        
         for (UtilityProvider provider : utilityProviders){
             if(provider instanceof WaterPumpingStation){
                 waterProvList.add((WaterPumpingStation) provider);
@@ -26,7 +23,7 @@ public class UtilityDistributor{
             }
         }
     }
-        
+
     public void distribute() {
         distributeInternet();
         distributeWater();
@@ -87,11 +84,13 @@ public class UtilityDistributor{
                 if(current instanceof Housing){
                     Housing housing = (Housing) current;
                     int consumed = Math.min((housing).getUtilityDemand(),startingCell.getTotalInternet());
+
                     startingCell.decTotalInternet(consumed);
                     (housing).setReceivedInternet((housing).getReceivedInternet() + consumed);
                 } else if(current instanceof Commercial){
                     Commercial commercial = (Commercial) current;
                     int consumed = Math.min((commercial).getUtilityDemand(),startingCell.getTotalInternet());
+
                     startingCell.decTotalInternet(consumed);
                     (commercial).setReceivedInternet((commercial).getReceivedInternet() + consumed);
                 }
