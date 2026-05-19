@@ -123,13 +123,15 @@ public class UtilityDistributor{
                 Cell current = unvisitedQ.remove(); //take the first element and stores in current
                 //this is where the unique distribution will happen
                 if(current instanceof Housing){
-                    int consumed = Math.min(((Housing) current).getUtilityDemand(),startingCell.getTotalInternet());
+                    Housing housing = (Housing) current;
+                    int consumed = Math.min((housing).getUtilityDemand(),startingCell.getTotalInternet());
                     startingCell.decTotalInternet(consumed);
-                    ((Housing) current).setReceivedInternet(((Housing) current).getReceivedInternet() + consumed);
+                    (housing).setReceivedInternet((housing).getReceivedInternet() + consumed);
                 } else if(current instanceof Commercial){
-                    int consumed = Math.min(((Commercial) current).getUtilityDemand(),startingCell.getTotalInternet());
+                    Commercial commercial = (Commercial) current;
+                    int consumed = Math.min((commercial).getUtilityDemand(),startingCell.getTotalInternet());
                     startingCell.decTotalInternet(consumed);
-                    ((Commercial) current).setReceivedInternet(((Commercial) current).getReceivedInternet() + consumed);
+                    (commercial).setReceivedInternet((commercial).getReceivedInternet() + consumed);
                 }
 
 
