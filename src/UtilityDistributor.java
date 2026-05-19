@@ -3,13 +3,14 @@ import java.util.*;
 public class UtilityDistributor{
 
     private ArrayList<Cell> cellArrayList = new ArrayList<>();
+    private HashMap<Point, Cell> cellHashMap;
+    private ArrayList<UtilityProvider> utilityProviders;
 
-    public UtilityDistributor(ArrayList<Cell> cellArrayList) {
+
+    public UtilityDistributor(ArrayList<Cell> cellArrayList, HashMap<Point, Cell> cellHashMap, ArrayList<UtilityProvider> utilityProviders) {
         this.cellArrayList = cellArrayList;
-
-        for (Cell cell : cellArrayList) {
-            grid.put(cell.getLocation(), cell);
-        }
+        this.cellHashMap = cellHashMap;
+        this.utilityProviders = utilityProviders;
     }
 
     private Map<Point,Cell> grid = new HashMap<>();
