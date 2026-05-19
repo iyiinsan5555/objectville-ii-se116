@@ -12,7 +12,7 @@ public class UtilityDistributor{
     public UtilityDistributor( HashMap<Point, Cell> cellHashMap, ArrayList<UtilityProvider> utilityProviders) {
 
         this.cellHashMap = cellHashMap;
-        
+
         for (UtilityProvider provider : utilityProviders){
             if(provider instanceof WaterPumpingStation){
                 waterProvList.add((WaterPumpingStation) provider);
@@ -45,8 +45,7 @@ public class UtilityDistributor{
             while (!unvisitedQ.isEmpty() && startingCell.getTotalWater()>0) {
                 Cell current = unvisitedQ.remove(); //take the first element and stores in current
                 //this is where the unique distribution will happen
-                if (current instanceof Zone) {
-                    Zone zone = (Zone) current;
+                if (current instanceof Zone zone) {
                     int consumed = Math.min(zone.getUtilityDemand(), startingCell.getTotalWater());
 
                     zone.setReceivedWater(zone.getReceivedWater() + consumed);
@@ -81,14 +80,12 @@ public class UtilityDistributor{
             while (!unvisitedQ.isEmpty() && startingCell.getTotalInternet()>0) {
                 Cell current = unvisitedQ.remove(); //take the first element and stores in current
                 //this is where the unique distribution will happen
-                if(current instanceof Housing){
-                    Housing housing = (Housing) current;
+                if(current instanceof Housing housing){
                     int consumed = Math.min((housing).getUtilityDemand(),startingCell.getTotalInternet());
 
                     startingCell.decTotalInternet(consumed);
                     (housing).setReceivedInternet((housing).getReceivedInternet() + consumed);
-                } else if(current instanceof Commercial){
-                    Commercial commercial = (Commercial) current;
+                } else if(current instanceof Commercial commercial){
                     int consumed = Math.min((commercial).getUtilityDemand(),startingCell.getTotalInternet());
 
                     startingCell.decTotalInternet(consumed);
@@ -123,8 +120,7 @@ public class UtilityDistributor{
             while (!unvisitedQ.isEmpty() && totElec>0) {
                 Cell current = unvisitedQ.remove(); //take the first element and stores in current
                 //this is where the unique distribution will happen
-                if (current instanceof Zone) {
-                    Zone zone = (Zone) current;
+                if (current instanceof Zone zone) {
                     int consumed = Math.min(zone.getUtilityDemand(), startingCell.getTotalElectric());
 
                     zone.setReceivedElectricity(zone.getReceivedElectricity() + consumed);
