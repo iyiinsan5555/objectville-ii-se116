@@ -81,20 +81,17 @@ public class UtilityDistributor{
             visited.add(startingCell);
             unvisitedQ.add(startingCell);
 
-            int totWater = startingCell.getTotalWater();
 
-            while (!unvisitedQ.isEmpty() && totWater>0) {
+
+            while (!unvisitedQ.isEmpty() && startingCell.getTotalWater()>0) {
                 Cell current = unvisitedQ.remove(); //take the first element and stores in current
                 //this is where the unique distribution will happen
-                if(current instanceof Housing &&((Housing) current).getReceivedWater()<1){
-                    totWater--;
-                    ((Housing) current).setReceivedWater(1);
-                } else if (current instanceof Commercial && ((Commercial) current).getReceivedWater()<1) {
-                    totWater--;
-                    ((Commercial) current).setReceivedWater(1);
-                } else if (current instanceof Industrial &&((Industrial) current).getReceivedWater()<1) {
-                    totWater--;
-                    ((Industrial) current).setReceivedWater(1);
+                if (current instanceof Zone) {
+                    Zone zone = (Zone) current;
+                    int consumed = Math.min(zone.getUtilityDemand(), startingCell.getTotalWater());
+
+                    zone.setReceivedWater(zone.getReceivedWater() + consumed);
+                    startingCell.decTotalWater(consumed);
                 }
 
                 ArrayList<Cell> neighbors = getNeighbors(current);
@@ -121,17 +118,18 @@ public class UtilityDistributor{
             visited.add(startingCell);
             unvisitedQ.add(startingCell);
 
-            int totInt = startingCell.getTotalInternet();
 
-            while (!unvisitedQ.isEmpty() && totInt>0) {
+            while (!unvisitedQ.isEmpty() && startingCell.getTotalInternet()>0) {
                 Cell current = unvisitedQ.remove(); //take the first element and stores in current
                 //this is where the unique distribution will happen
-                if(current instanceof Housing && ((Housing) current).getReceivedInternet()<1){
-                    totInt--;
-                    ((Housing) current).setReceivedInternet(1);
-                } else if(current instanceof Commercial && ((Commercial) current).getReceivedInternet()<1){
-                    totInt--;
-                    ((Commercial) current).setReceivedInternet(1);
+                if(current instanceof Housing){
+                    int consumed = Math.min(((Housing) current).getUtilityDemand(),startingCell.getTotalInternet());
+                    startingCell.decTotalInternet(consumed);
+                    ((Housing) current).setReceivedInternet(((Housing) current).getReceivedInternet() + consumed);
+                } else if(current instanceof Commercial){
+                    int consumed = Math.min(((Commercial) current).getUtilityDemand(),startingCell.getTotalInternet());
+                    startingCell.decTotalInternet(consumed);
+                    ((Commercial) current).setReceivedInternet(((Commercial) current).getReceivedInternet() + consumed);
                 }
 
 
@@ -162,15 +160,12 @@ public class UtilityDistributor{
             while (!unvisitedQ.isEmpty() && totElec>0) {
                 Cell current = unvisitedQ.remove(); //take the first element and stores in current
                 //this is where the unique distribution will happen
-                if(current instanceof Housing && ((Housing) current).getReceivedElectricity()<1){
-                    totElec--;
-                    ((Housing) current).setReceivedElectricity(1);
-                } else if (current instanceof Industrial && ((Industrial) current).getReceivedElectricity()<1) {
-                    totElec--;
-                    ((Industrial) current).setReceivedElectricity(1);
-                } else if (current instanceof Commercial && ((Commercial) current).getReceivedElectricity()<1) {
-                    totElec--;
-                    ((Commercial) current).setReceivedElectricity(1);
+                if (current instanceof Zone) {
+                    Zone zone = (Zone) current;
+                    int consumed = Math.min(zone.getUtilityDemand(), startingCell.getTotalElectric());
+
+                    zone.setReceivedElectricity(zone.getReceivedElectricity() + consumed);
+                    startingCell.decTotalElectric(consumed);
                 }
 
                 ArrayList<Cell> neighbors = getNeighbors(current);
