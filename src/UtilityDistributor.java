@@ -6,36 +6,29 @@ public class UtilityDistributor{
     private HashMap<Point, Cell> cellHashMap;
     private ArrayList<UtilityProvider> utilityProviders;
 
+    private ArrayList<WaterPumpingStation> waterProvList = new ArrayList<>();
+    private ArrayList<InternetHub> intProvList = new ArrayList<>();
+    private ArrayList<PowerPlant> elecProvList = new ArrayList<>();
+
 
     public UtilityDistributor(ArrayList<Cell> cellArrayList, HashMap<Point, Cell> cellHashMap, ArrayList<UtilityProvider> utilityProviders) {
         this.cellArrayList = cellArrayList;
         this.cellHashMap = cellHashMap;
         this.utilityProviders = utilityProviders;
-    }
 
-    private Map<Point,Cell> grid = new HashMap<>();
-
-
-    //lists for each provider type. ı will then put a seperate individual distributor method. and call those in the main distributor.
-    ArrayList<WaterPumpingStation> waterProvList = new ArrayList<>();
-    ArrayList<InternetHub> intProvList = new ArrayList<>();
-    ArrayList<PowerPlant> elecProvList = new ArrayList<>();
-
-    public void findProviders(){
-        waterProvList.clear();
-        intProvList.clear();
-        elecProvList.clear();
-
-        for (Cell cell : grid.values()){
-            if(cell instanceof WaterPumpingStation){
-                waterProvList.add((WaterPumpingStation) cell);
-            } else if (cell instanceof InternetHub) {
-                intProvList.add((InternetHub) cell);
-            } else if (cell instanceof PowerPlant) {
-                elecProvList.add((PowerPlant) cell);
+        for (UtilityProvider provider : utilityProviders){
+            if(provider instanceof WaterPumpingStation){
+                waterProvList.add((WaterPumpingStation) provider);
+            } else if (provider instanceof InternetHub) {
+                intProvList.add((InternetHub) provider);
+            } else if (provider instanceof PowerPlant) {
+                elecProvList.add((PowerPlant) provider);
             }
         }
     }
+
+    private Map<Point,Cell> grid = new HashMap<>();
+    
 
     public ArrayList<Cell> getNeighbors(Cell start) {
         ArrayList<Cell> neighbors = new ArrayList<>();
@@ -66,7 +59,6 @@ public class UtilityDistributor{
     }
 
     public void distribute() {
-        findProviders();
         distributeInternet();
         distributeWater();
         distributeElec();
