@@ -35,15 +35,22 @@ public class Commercial extends Zone{
     @Override
     public int calculateOutput() {
         int m = getM(); // Commercial requires Electricity, Water, and Internet
+        Point location = this.getLocation();
+        int X =  location.getX();
+        int Y = location.getY();
 
         switch (this.getLevel()) {
             case 1:
+                System.out.printf("Commercial at (%d,%d) generated %d lifestyle", X, Y, m);
                 return m;
             case 2:
+                System.out.printf("Commercial at (%d,%d) generated %d lifestyle", X, Y, 2 * m);
                 return 2 * m;
             case 3: //Level 3 output depends on the minimum value between received population and goods.
+                System.out.printf("Commercial at (%d,%d) generated %d lifestyle", X, Y, (2 * m) + Math.min(this.receivedPopulation, this.receivedGoods));
                 return (2 * m) + Math.min(this.receivedPopulation, this.receivedGoods);
             default:
+                System.out.printf("Commercial at (%d,%d) generated %d lifestyle", X, Y, 0);
                 return 0;
         }
     }
