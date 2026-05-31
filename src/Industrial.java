@@ -50,15 +50,22 @@ public class Industrial extends Zone{
     @Override
     public int calculateOutput() {
         int m = getM();
+        Point location = this.getLocation();
+        int X =  location.getX();
+        int Y = location.getY();
 
         switch (this.getLevel()) {
             case 1:
+                System.out.printf("Industrial at (%d,%d) generated %d goods", X, Y, m);
                 return m;
             case 2:
+                System.out.printf("Industrial at (%d,%d) generated %d goods", X, Y, 2 * m);
                 return 2 * m;
             case 3:
+                System.out.printf("Industrial at (%d,%d) generated %d goods", X, Y, (2 * m) + this.receivedPopulation);
                 return (2 * m) + this.receivedPopulation;
             default:
+                System.out.printf("Industrial at (%d,%d) generated %d goods", X, Y, 0);
                 return 0;
         }
     }
