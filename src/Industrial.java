@@ -13,9 +13,9 @@ public class Industrial extends Zone{
      */
     @Override
     public void update() {
+        updateLevel();
         this.setOutput(calculateOutput());
         this.setUtilityDemand(Math.max(1, this.getOutput()));
-        updateLevel();
 
         // Clean up temporary data.
         this.resetData();

@@ -11,9 +11,9 @@ public class Commercial extends Zone{
     //Updates output, sets minimum utility demand, changes level, and cleans data.
     @Override
     public void update() {
+        updateLevel();
         this.setOutput(calculateOutput());
         this.setUtilityDemand(Math.max(1, this.getOutput()));
-        updateLevel();
 
         this.resetData();
     }
