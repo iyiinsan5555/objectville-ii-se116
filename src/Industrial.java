@@ -77,36 +77,46 @@ public class Industrial extends Zone{
 
         int currentLevel = this.getLevel();
 
+        Point location = this.getLocation();
+        int X =  location.getX();
+        int Y = location.getY();
+
         if (currentLevel == 0) {
             // Level 1 requires basic utilities (m > 0) AND population workers
             if (this.receivedPopulation > 0) {
                 this.setLevel(1);
+                System.out.printf("Industrial at (%d,%d) levels up from 0 to 1", X, Y);
             }
         }
         else if (currentLevel == 1) {
             // Upgrade to Level 2 requires maintaining Level 1 conditions + Security service
             if (this.receivedPopulation > 0 && this.isHasSecurity()) {
                 this.setLevel(2);
+                System.out.printf("Industrial at (%d,%d) levels up from 1 to 2", X, Y);
             }
             //Gradual fall to Level 0 if it loses workers
             else if (this.receivedPopulation == 0) {
                 this.setLevel(0);
+                System.out.printf("Industrial at (%d,%d) levels down from 1 to 0", X, Y);
             }
         }
         else if (currentLevel == 2) {
             // If it loses security or workers, it drops back to Level 1
             if (this.receivedPopulation == 0 || !this.isHasSecurity()) {
                 this.setLevel(1);
+                System.out.printf("Industrial at (%d,%d) levels down from 2 to 1", X, Y);
             }
             // Upgrade to Level 3 requires excess population presence
             else if (this.receivedPopulation > 0) {
                 this.setLevel(3);
+                System.out.printf("Industrial at (%d,%d) levels up from 2 to 3", X, Y);
             }
         }
         else if (currentLevel == 3) {
             // If conditions fail, it drops back to Level 2
             if (this.receivedPopulation == 0 || !this.isHasSecurity()) {
                 this.setLevel(2);
+                System.out.printf("Industrial at (%d,%d) levels down from 3 to 2", X, Y);
             }
         }
 
