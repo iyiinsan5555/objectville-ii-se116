@@ -77,25 +77,38 @@ public class Housing extends Zone{
 
         int currentLevel = this.getLevel();
 
+        Point location = this.getLocation();
+        int X =  location.getX();
+        int Y = location.getY();
+
         if (currentLevel == 0) {
             // Level 1 only requires basic utilities (m > 0)
             this.setLevel(1);
-        } else if (currentLevel == 1) {
+            System.out.printf("Housing at (%d,%d) levels up from 0 to 1", X, Y);
+        }
+        else if (currentLevel == 1) {
             // Check if it qualifies to upgrade to Level 2
             if (this.isHasSecurity() && this.isHasHealth() && this.isHasEducation()) {
                 this.setLevel(2);
+                System.out.printf("Housing at (%d,%d) levels up from 1 to 2", X, Y);
             }
-        } else if (currentLevel == 2) {
+        }
+        else if (currentLevel == 2) {
             // Gradual fall: if it loses any required service, it drops back to Level 1
             if (!this.isHasSecurity() || !this.isHasHealth() || !this.isHasEducation()) {
                 this.setLevel(1);
-            } else if (this.receivedLifestyle > 0) {
-                this.setLevel(3);
+                System.out.printf("Housing at (%d,%d) levels down from 2 to 1", X, Y);
             }
-        } else if (currentLevel == 3) {
+            else if (this.receivedLifestyle > 0) {
+                this.setLevel(3);
+                System.out.printf("Housing at (%d,%d) levels up from 2 to 3", X, Y);
+            }
+        }
+        else if (currentLevel == 3) {
             // Gradual fall: if it loses lifestyle or any service, it drops back to Level 2
             if (this.receivedLifestyle == 0 || !this.isHasSecurity() || !this.isHasHealth() || !this.isHasEducation()) {
                 this.setLevel(2);
+                System.out.printf("Housing at (%d,%d) levels down from 3 to 2", X, Y);
             }
         }
     }
