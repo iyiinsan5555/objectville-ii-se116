@@ -52,15 +52,22 @@ public class Housing extends Zone{
     @Override
     public int calculateOutput() {
         int m = getM();
+        Point location = this.getLocation();
+        int X =  location.getX();
+        int Y = location.getY();
 
         switch (this.getLevel()) {
             case 1:
+                System.out.printf("House at (%d,%d) generated %d population", X, Y, m);
                 return m;
             case 2:
+                System.out.printf("House at (%d,%d) generated %d population", X, Y, 2 * m);
                 return 2 * m;
             case 3:
+                System.out.printf("House at (%d,%d) generated %d population", X, Y, (2 * m) + this.receivedLifestyle);
                 return (2 * m) + this.receivedLifestyle;
             default:
+                System.out.printf("House at (%d,%d) generated %d population", X, Y, 0);
                 return 0; // Level 0 produces 0 population
         }
     }
