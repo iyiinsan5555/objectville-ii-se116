@@ -9,6 +9,6 @@ public class School extends ServiceProvider {
 
     @Override
     public String getServiceType() {
-        return "com.objectville.entity.cells.serviceProviders.School";
+        return "School";
     }
 }
