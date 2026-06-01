@@ -1,3 +1,5 @@
+package com.objectville.util;
+
 import java.util.Objects;
 
 public class Point {
@@ -40,13 +42,13 @@ public class Point {
         return "("+ x + ", " + y + ")";
     }
 
-    //HashMap uses this to distinguish objects of Point class
+    //HashMap uses this to distinguish objects of com.objectville.util.Point class
     //Reference: https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html#equals-java.lang.Object-
     @Override
     public boolean equals(Object object) {
 
         if (!(object instanceof Point)) {
-            return false; //the object is not an instance of Point
+            return false; //the object is not an instance of com.objectville.util.Point
         }
         else if (this == object) {
             return true; //they point to the same mem. location (same reference)

@@ -1,3 +1,5 @@
+package com.objectville.entity.cells.serviceProviders;
+
 public class PoliceStation extends ServiceProvider {
     private static final int radius = 5; //fixed size which is designated before
 
@@ -8,6 +10,6 @@ public class PoliceStation extends ServiceProvider {
 
     @Override
     public String getServiceType() {
-        return "PoliceStation";
+        return "com.objectville.entity.cells.serviceProviders.PoliceStation";
     }
 }

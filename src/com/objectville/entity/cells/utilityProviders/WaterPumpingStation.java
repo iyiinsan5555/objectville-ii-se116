@@ -1,3 +1,5 @@
+package com.objectville.entity.cells.utilityProviders;
+
 public class WaterPumpingStation extends UtilityProvider {
     private int TotalWater;
 

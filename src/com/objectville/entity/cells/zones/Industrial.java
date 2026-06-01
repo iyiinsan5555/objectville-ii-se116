@@ -1,8 +1,10 @@
-public class Industrial extends Zone{
+package com.objectville.entity.cells.zones;
+
+public class Industrial extends Zone {
     private int receivedPopulation;
     private int prevLevel;
 
-    //Initializes the Industrial zone with coordinates and sets received population to 0.
+    //Initializes the com.objectville.entity.cells.zones.Industrial zone with coordinates and sets received population to 0.
     public Industrial(int x, int y) {
         super(x, y);
         this.receivedPopulation = 0;
@@ -45,8 +47,8 @@ public class Industrial extends Zone{
     }
 
     /*
-    Overriding getM because Industrial ONLY requires Electricity and Water.
-    Internet is not a constraint for Industrial production.
+    Overriding getM because com.objectville.entity.cells.zones.Industrial ONLY requires Electricity and Water.
+    Internet is not a constraint for com.objectville.entity.cells.zones.Industrial production.
      */
     @Override
     public int getM() {

@@ -1,4 +1,6 @@
-public class Commercial extends Zone{
+package com.objectville.entity.cells.zones;
+
+public class Commercial extends Zone {
     private int receivedPopulation;
     private int receivedGoods;
     private int prevLevel;
@@ -43,7 +45,7 @@ public class Commercial extends Zone{
     //Calculates lifestyle output based on level and required utilities (m).
     @Override
     public int calculateOutput() {
-        int m = getM(); // Commercial requires Electricity, Water, and Internet
+        int m = getM(); // com.objectville.entity.cells.zones.Commercial requires Electricity, Water, and Internet
 
         switch (this.getLevel()) {
             case 1:
