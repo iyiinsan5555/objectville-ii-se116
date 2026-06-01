@@ -2,25 +2,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GridManager {
-    ArrayList<Cell> cellArrayList;
-    ArrayList<Zone> zones;
-    ArrayList<UtilityProvider> utilityProviders;
-    ArrayList<ServiceProvider> serviceProviders;
+    private final ArrayList<Cell> cellArrayList;
+    private final HashMap<Point, Cell> cellHashMap;
+    private final ArrayList<Zone> zones;
+    private final ArrayList<UtilityProvider> utilityProviders;
+    private final ArrayList<ServiceProvider> serviceProviders;
 
     public GridManager(ArrayList<Cell> cellArrayList) {
         this.cellArrayList = cellArrayList;
 
         //Implementing other fields
+        cellHashMap = new HashMap<>();
         zones = new ArrayList<>();
         utilityProviders = new ArrayList<>();
         serviceProviders = new ArrayList<>();
 
         for (Cell cell : cellArrayList) {
+            cellHashMap.put(cell.getLocation(), cell);
             if (cell instanceof Zone) {zones.add( (Zone) cell);}
             else if (cell instanceof UtilityProvider) {utilityProviders.add( (UtilityProvider) cell);}
             else if (cell instanceof ServiceProvider) {serviceProviders.add( (ServiceProvider) cell);}
         }
-
     }
 
     //Getters
@@ -28,7 +30,11 @@ public class GridManager {
         return cellArrayList;
     }
 
-    public ArrayList<Cell> getZones() {
+    public HashMap<Point, Cell> getCellHashMap() {
+        return cellHashMap;
+    }
+
+    public ArrayList<Zone> getZones() {
         return zones;
     }
 
@@ -41,5 +47,27 @@ public class GridManager {
     }
 
     //Static Methods (Util Methods)
-    //getNeighbors() needs fix. At the moment should not use HashMap because it gives undesired results
+    public static ArrayList<Cell> getNeighbors(Cell cell, HashMap<Point, Cell> cellHashMap) {
+        ArrayList<Cell> neighbors = new ArrayList<>();
+
+        Point root = cell.getLocation();
+        int x = root.getX();
+        int y = root.getY();
+
+        Point[] neighborPoints = {new Point(x, y + 1), new Point(x, y - 1), new Point(x + 1 , y),
+                                  new Point(x - 1, y), new Point(x + 1, y + 1), new Point(x - 1, y - 1),
+                                  new Point(x + 1, y - 1), new Point(x - 1, y + 1)};
+
+        for (Point point : neighborPoints) {
+            if (cellHashMap.containsKey(point)) {
+                Cell neigborCell = cellHashMap.get(point);
+
+                if (neigborCell instanceof Transferable) {
+                    neighbors.add(neigborCell);
+                }
+            }
+        }
+
+        return neighbors;
+    }
 }

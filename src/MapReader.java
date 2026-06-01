@@ -69,7 +69,7 @@ public class MapReader {
                 cell = new PowerPlant(x, y);
                 break;
             case waterPumpingStationSymbol:
-                cell = new WaterPumingStation(x, y);
+                cell = new WaterPumpingStation(x, y); // small writing error fixed
                 break;
             case internetHubSymbol:
                 cell = new InternetHub(x, y);
