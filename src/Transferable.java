@@ -1,4 +1,1 @@
-public interface Transferable {
-    boolean isTransferable();
-
-}
+public interface Transferable {}
