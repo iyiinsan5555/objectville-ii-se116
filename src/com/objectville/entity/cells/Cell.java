@@ -3,8 +3,6 @@ package com.objectville.entity.cells;
 import com.objectville.util.Point;
 
 public abstract class Cell {
-    private int x;
-    private int y;
     private Point location;
 
 

@@ -18,7 +18,7 @@ public class ServiceDistributor {
         for(ServiceProvider s : serviceProviders){
             for (Zone z : zones){
                 if (s.getLocation().distanceTo(z.getLocation()) <= s.getRadius()){
-                    switch (s.getServiceType()){
+                    switch (s.getServiceProviderType()){
                         case "PoliceStation":
                             z.setHasSecurity(true);
                             break;

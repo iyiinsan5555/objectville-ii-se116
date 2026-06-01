@@ -107,7 +107,7 @@ public class Industrial extends Zone{
                 this.setLevel(1);
             }
             // Upgrade to Level 3 requires excess population presence
-            else if (this.receivedPopulation > 0) {
+            else if (this.receivedPopulation - getM() > 0) {
                 this.setLevel(3);
             }
         }

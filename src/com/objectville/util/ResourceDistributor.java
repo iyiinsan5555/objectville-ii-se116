@@ -68,10 +68,10 @@ public class ResourceDistributor {
             for (Zone zone : zones) {
                 if (zone instanceof Industrial) {
                     ((Industrial) zone).setReceivedPopulation(sharedPopulation);
-                    System.out.println(zone.getZoneType() + " at " + zone.getLocation() + "received " + sharedPopulation + " population");
+                    System.out.println(zone.getZoneType() + " at " + zone.getLocation() + " received " + sharedPopulation + " population");
                 } else if (zone instanceof Commercial) {
                     ((Commercial) zone).setReceivedPopulation(sharedPopulation);
-                    System.out.println(zone.getZoneType() + " at " + zone.getLocation() + "received " + sharedPopulation + " population");
+                    System.out.println(zone.getZoneType() + " at " + zone.getLocation() + " received " + sharedPopulation + " population");
                 }
             }
         }
@@ -84,7 +84,7 @@ public class ResourceDistributor {
             for (Zone zone : zones) {
                 if (zone instanceof Commercial) {
                     ((Commercial) zone).setReceivedGoods(sharedGoods);
-                    System.out.println(zone.getZoneType() + " at " + zone.getLocation() + "received " + sharedGoods + " goods");
+                    System.out.println(zone.getZoneType() + " at " + zone.getLocation() + " received " + sharedGoods + " goods");
                 }
             }
         }
@@ -97,7 +97,7 @@ public class ResourceDistributor {
             for (Zone zone : zones) {
                 if (zone instanceof Housing) {
                     ((Housing) zone).setReceivedLifestyle(sharedLifestyle);
-                    System.out.println(zone.getZoneType() + " at " + zone.getLocation() + "received " + sharedLifestyle + " lifestyles");
+                    System.out.println(zone.getZoneType() + " at " + zone.getLocation() + " received " + sharedLifestyle + " lifestyles");
                 }
             }
         }

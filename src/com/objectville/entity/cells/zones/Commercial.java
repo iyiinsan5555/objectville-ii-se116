@@ -91,7 +91,7 @@ public class Commercial extends Zone {
                 this.setLevel(1);
             }
             // Upgrade to Level 3 requires excess population and goods
-            else if (this.receivedPopulation > 0 && this.receivedGoods > 0) {
+            else if (this.receivedPopulation - getM() > 0 && this.receivedGoods - getM() > 0) {
                 this.setLevel(3);
             }
         }
