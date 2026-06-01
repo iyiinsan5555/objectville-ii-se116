@@ -1,5 +1,7 @@
 package com.objectville.entity.cells.zones;
 
+import com.objectville.entity.cells.Cell;
+
 public class Commercial extends Zone {
     private int receivedPopulation;
     private int receivedGoods;
@@ -9,6 +11,16 @@ public class Commercial extends Zone {
         super(x, y);
         this.receivedPopulation = 0;
         this.receivedGoods = 0;
+    }
+
+    @Override
+    public String getUtilityType() {
+        return "internet";
+    }
+
+    @Override
+    public boolean canSupply(Cell cell) {
+        return true;
     }
 
     //Updates output, sets minimum utility demand, changes level, and cleans data.

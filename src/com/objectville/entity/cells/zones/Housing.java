@@ -1,5 +1,7 @@
 package com.objectville.entity.cells.zones;
 
+import com.objectville.entity.cells.Cell;
+
 public class Housing extends Zone {
     private int receivedLifestyle;
     private int prevLevel;
@@ -7,6 +9,16 @@ public class Housing extends Zone {
     public Housing(int x, int y) {
         super(x, y);
         this.receivedLifestyle = 0;
+    }
+
+    @Override
+    public String getUtilityType() {
+        return "water";
+    }
+
+    @Override
+    public boolean canSupply(Cell cell) {
+        return true;
     }
 
     /*

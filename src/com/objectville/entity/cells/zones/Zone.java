@@ -24,6 +24,10 @@ public abstract class Zone extends Cell implements Transferable {
         resetData();
     }
 
+    public abstract String getUtilityType();
+
+    public abstract boolean canSupply(Cell cell);
+
     /*
     Updates the zone state.
      1. Updates level based on received resources.

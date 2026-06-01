@@ -1,5 +1,7 @@
 package com.objectville.entity.cells.zones;
 
+import com.objectville.entity.cells.Cell;
+
 public class Industrial extends Zone {
     private int receivedPopulation;
     private int prevLevel;
@@ -8,6 +10,16 @@ public class Industrial extends Zone {
     public Industrial(int x, int y) {
         super(x, y);
         this.receivedPopulation = 0;
+    }
+
+    @Override
+    public String getUtilityType() {
+        return "electricity";
+    }
+
+    @Override
+    public boolean canSupply(Cell cell) {
+        return false;
     }
 
     /*
