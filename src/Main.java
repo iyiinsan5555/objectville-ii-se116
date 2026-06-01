@@ -6,20 +6,15 @@ import java.nio.file.Paths;
 public class Main { //will handle -jar (and args --> nTick & mapFileName)
     public static void main(String[] args) {
 
-        /*if (args.length != 2) {
+        if (args.length != 2) {
             System.err.println("Usage: java -jar ObjectVilleGame.jar <map name> <tick count>");
             System.out.println("Example usage: java -jar ObjectVilleGame.jar mymap.txt 5");
             return;
         }
 
-         */
-
         try {
-            //String mapFileName = args[0];
-            //int nTicks = Integer.parseInt(args[1]);
-
-            String mapFileName = "exampleMap.txt";
-            int nTicks = 10;
+            String mapFileName = args[0];
+            int nTicks = Integer.parseInt(args[1]);
 
             Path mapPath = Paths.get(mapFileName);
 
