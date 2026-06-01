@@ -56,7 +56,7 @@ public class ResourceDistributor {
     public void distribute() {
         // 1. Distribute Population to Industrial and Commercial zones
         int populationTargets = this.totalIndustrial + this.totalCommercial;
-        if (populationTargets > 0) {
+        if (populationTargets > 0 && this.totalPopulation > 0) {
             // The lost remainder value is accepted as the mathematical cost of distribution.
             int sharedPopulation = this.totalPopulation / populationTargets;
 
@@ -71,7 +71,7 @@ public class ResourceDistributor {
         }
 
         // Goods produced by Industrial zones are split equally only among Commercial zones.
-        if (this.totalCommercial > 0) {
+        if (this.totalCommercial > 0 && this.totalGoods > 0) {
             int sharedGoods = this.totalGoods / this.totalCommercial;
 
             // Loop through all zones to update commercial instances with their share of goods
@@ -83,7 +83,7 @@ public class ResourceDistributor {
         }
 
         // Lifestyle items produced by Commercial zones are split equally only among Housing zones.
-        if (this.totalHousing > 0) {
+        if (this.totalHousing > 0 && this.totalLifestyle > 0) {
             int sharedLifestyle = this.totalLifestyle / this.totalHousing;
 
             // Loop through all zones to update housing instances with their share of lifestyle points.
