@@ -1,32 +1,27 @@
 package com.objectville.util;
 
 import com.objectville.entity.cells.Cell;
-import com.objectville.entity.cells.zones.Commercial;
-import com.objectville.entity.cells.zones.Housing;
-import com.objectville.entity.cells.zones.Zone;
+import com.objectville.entity.cells.zones.*;
 import com.objectville.core.GridManager;
-import com.objectville.entity.cells.utilityProviders.InternetHub;
-import com.objectville.entity.cells.utilityProviders.PowerPlant;
-import com.objectville.entity.cells.utilityProviders.UtilityProvider;
-import com.objectville.entity.cells.utilityProviders.WaterPumpingStation;
+import com.objectville.entity.cells.utilityProviders.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Queue;
+import java.util.HashSet;
+import java.util.ArrayDeque;
 
-public class UtilityDistributor{
-
+public class UtilityDistributor {
     private HashMap<Point, Cell> cellHashMap;
-
     private ArrayList<WaterPumpingStation> waterProvList = new ArrayList<>();
     private ArrayList<InternetHub> intProvList = new ArrayList<>();
     private ArrayList<PowerPlant> elecProvList = new ArrayList<>();
 
-
-    public UtilityDistributor( HashMap<Point, Cell> cellHashMap, ArrayList<UtilityProvider> utilityProviders) {
-
+    public UtilityDistributor(HashMap<Point, Cell> cellHashMap, ArrayList<UtilityProvider> utilityProviders) {
         this.cellHashMap = cellHashMap;
 
-        for (UtilityProvider provider : utilityProviders){
-            if(provider instanceof WaterPumpingStation){
+        for (UtilityProvider provider : utilityProviders) {
+            if (provider instanceof WaterPumpingStation) {
                 waterProvList.add((WaterPumpingStation) provider);
             } else if (provider instanceof InternetHub) {
                 intProvList.add((InternetHub) provider);
@@ -40,116 +35,106 @@ public class UtilityDistributor{
         distributeInternet();
         distributeWater();
         distributeElec();
-
     }
 
-    public void distributeWater(){
+    public void distributeWater() {
+        for (WaterPumpingStation startingCell : waterProvList) {
+            Queue<Cell> unvisitedQ = new ArrayDeque<>();
+            HashSet<Cell> visited = new HashSet<>();
 
-
-        Queue<Cell> unvisitedQ = new ArrayDeque<>();
-        ArrayList<Cell> visited = new ArrayList<>();
-        for(WaterPumpingStation startingCell: waterProvList){
             visited.add(startingCell);
             unvisitedQ.add(startingCell);
 
-            while (!unvisitedQ.isEmpty() && startingCell.getTotalWater()>0) {
-                Cell current = unvisitedQ.remove(); //take the first element and stores in current
-                //this is where the unique distribution will happen
+            while (!unvisitedQ.isEmpty() && startingCell.getTotalWater() > 0) {
+                Cell current = unvisitedQ.remove();
+
                 if (current instanceof Zone zone) {
                     int consumed = Math.min(zone.getUtilityDemand(), startingCell.getTotalWater());
 
                     zone.setReceivedWater(zone.getReceivedWater() + consumed);
                     startingCell.decTotalWater(consumed);
+
+                    System.out.println(zone.getZoneType() + " at " + zone.getLocation() + " received " + consumed + " water");
                 }
 
-                ArrayList<Cell> neighbors = GridManager.getNeighbors(current,cellHashMap);
-                //storing adjacent cells to the queue
+                ArrayList<Cell> neighbors = GridManager.getNeighbors(current, cellHashMap);
                 for (Cell neighbor : neighbors) {
                     if (!visited.contains(neighbor)) {
                         visited.add(neighbor);
                         unvisitedQ.add(neighbor);
-
-                    }
-                }
-            }
-        }
-
-
-
-    }
-
-    public void distributeInternet(){
-
-        Queue<Cell> unvisitedQ = new ArrayDeque<>();
-        ArrayList<Cell> visited = new ArrayList<>();
-        for(InternetHub startingCell: intProvList){
-            visited.add(startingCell);
-            unvisitedQ.add(startingCell);
-
-
-            while (!unvisitedQ.isEmpty() && startingCell.getTotalInternet()>0) {
-                Cell current = unvisitedQ.remove(); //take the first element and stores in current
-                //this is where the unique distribution will happen
-                if(current instanceof Housing housing){
-                    int consumed = Math.min((housing).getUtilityDemand(),startingCell.getTotalInternet());
-
-                    startingCell.decTotalInternet(consumed);
-                    (housing).setReceivedInternet((housing).getReceivedInternet() + consumed);
-                } else if(current instanceof Commercial commercial){
-                    int consumed = Math.min((commercial).getUtilityDemand(),startingCell.getTotalInternet());
-
-                    startingCell.decTotalInternet(consumed);
-                    (commercial).setReceivedInternet((commercial).getReceivedInternet() + consumed);
-                }
-
-
-
-                ArrayList<Cell> neighbors = GridManager.getNeighbors(current,cellHashMap);
-                //storing adjacent cells to the queue
-                for (Cell neighbor : neighbors) {
-                    if (!visited.contains(neighbor)) {
-                        visited.add(neighbor);
-                        unvisitedQ.add(neighbor);
-
                     }
                 }
             }
         }
     }
 
-    public void distributeElec(){
+    public void distributeInternet() {
+        for (InternetHub startingCell : intProvList) {
+            Queue<Cell> unvisitedQ = new ArrayDeque<>();
+            HashSet<Cell> visited = new HashSet<>();
 
-        Queue<Cell> unvisitedQ = new ArrayDeque<>();
-        ArrayList<Cell> visited = new ArrayList<>();
-        for(PowerPlant startingCell: elecProvList){
             visited.add(startingCell);
             unvisitedQ.add(startingCell);
 
-            int totElec = startingCell.getTotalElectric();
+            while (!unvisitedQ.isEmpty() && startingCell.getTotalInternet() > 0) {
+                Cell current = unvisitedQ.remove();
 
-            while (!unvisitedQ.isEmpty() && totElec>0) {
-                Cell current = unvisitedQ.remove(); //take the first element and stores in current
-                //this is where the unique distribution will happen
+                if (current instanceof Housing housing) {
+                    int consumed = Math.min(housing.getUtilityDemand(), startingCell.getTotalInternet());
+
+                    startingCell.decTotalInternet(consumed);
+                    housing.setReceivedInternet(housing.getReceivedInternet() + consumed);
+
+                    System.out.println(housing.getZoneType() + " at " + housing.getLocation() + " received " + consumed + " internet");
+                } else if (current instanceof Commercial commercial) {
+                    int consumed = Math.min(commercial.getUtilityDemand(), startingCell.getTotalInternet());
+
+                    startingCell.decTotalInternet(consumed);
+                    commercial.setReceivedInternet(commercial.getReceivedInternet() + consumed);
+
+                    System.out.println(commercial.getZoneType() + " at " + commercial.getLocation() + " received " + consumed + " internet");
+                }
+
+                ArrayList<Cell> neighbors = GridManager.getNeighbors(current, cellHashMap);
+                for (Cell neighbor : neighbors) {
+                    if (!visited.contains(neighbor)) {
+                        visited.add(neighbor);
+                        unvisitedQ.add(neighbor);
+                    }
+                }
+            }
+        }
+    }
+
+    public void distributeElec() {
+        for (PowerPlant startingCell : elecProvList) {
+            Queue<Cell> unvisitedQ = new ArrayDeque<>();
+            HashSet<Cell> visited = new HashSet<>();
+
+            visited.add(startingCell);
+            unvisitedQ.add(startingCell);
+
+
+            while (!unvisitedQ.isEmpty() && startingCell.getTotalElectric() > 0) {
+                Cell current = unvisitedQ.remove();
+
                 if (current instanceof Zone zone) {
                     int consumed = Math.min(zone.getUtilityDemand(), startingCell.getTotalElectric());
 
                     zone.setReceivedElectricity(zone.getReceivedElectricity() + consumed);
                     startingCell.decTotalElectric(consumed);
+
+                    System.out.println(zone.getZoneType() + " at " + zone.getLocation() + " received " + consumed + " electricity");
                 }
 
-                ArrayList<Cell> neighbors = GridManager.getNeighbors(current,cellHashMap);
-                //storing adjacent cells to the queue
+                ArrayList<Cell> neighbors = GridManager.getNeighbors(current, cellHashMap);
                 for (Cell neighbor : neighbors) {
                     if (!visited.contains(neighbor)) {
                         visited.add(neighbor);
                         unvisitedQ.add(neighbor);
-
                     }
                 }
             }
-
         }
-
-
     }
 }

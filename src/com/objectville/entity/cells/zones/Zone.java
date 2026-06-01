@@ -44,9 +44,19 @@ public abstract class Zone extends Cell implements Transferable {
     //Returns the type of resource produced by the zone.
     public abstract String getOutputType();
 
+    public abstract String getZoneType();
+
     //Helper method to calculate 'm' (the minimum amount of required utility delivered)
     public int getM() {
         return Math.min(receivedElectricity, Math.min(receivedWater, receivedInternet));
+    }
+
+    public void printLevel(int oldLevel, int newLevel) {
+        if (oldLevel < newLevel) {
+            System.out.println(getZoneType()+ " at " + getLocation() +" levels up from " + oldLevel + " to " + newLevel);
+        } else if (oldLevel > newLevel) {
+            System.out.println(getZoneType()+ " at " + getLocation() +" levels down from " + oldLevel + " to " + newLevel);
+        }
     }
 
     // Getters and Setters

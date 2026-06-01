@@ -1,31 +1,29 @@
 package com.objectville.entity.cells.zones;
 
+
 public class Commercial extends Zone {
     private int receivedPopulation;
     private int receivedGoods;
-    private int prevLevel;
+    private int oldLevel;
 
     public Commercial(int x, int y) {
         super(x, y);
         this.receivedPopulation = 0;
         this.receivedGoods = 0;
+        this.oldLevel = 0;
     }
 
     //Updates output, sets minimum utility demand, changes level, and cleans data.
     @Override
     public void update() {
-
+        int oldLevel = this.getLevel();
         updateLevel();
         this.setOutput(calculateOutput());
         this.setUtilityDemand(Math.max(1, this.getOutput()));
 
-        System.out.printf("Commercial at %s generated %d lifestyle", this.toString(), getOutput());
-        
-        if(this.getLevel() < prevLevel){
-            System.out.printf("Commercial at (%d,%d) levels down from %d to %d", this.toString(), this.getLevel(), prevLevel);
-        } else{
-            System.out.printf("Commercial at (%d,%d) levels up from %d to %d", this.toString(), this.getLevel(), prevLevel);
-        }
+        System.out.println(getZoneType() + " at " + getLocation() + " generated " + getOutput() + " " + getOutputType().toLowerCase());
+        printLevel(oldLevel, getLevel());
+
         this.resetData();
     }
 
@@ -45,7 +43,7 @@ public class Commercial extends Zone {
     //Calculates lifestyle output based on level and required utilities (m).
     @Override
     public int calculateOutput() {
-        int m = getM(); // com.objectville.entity.cells.zones.Commercial requires Electricity, Water, and Internet
+        int m = getM(); // Commercial requires Electricity, Water, and Internet
 
         switch (this.getLevel()) {
             case 1:
@@ -93,7 +91,7 @@ public class Commercial extends Zone {
                 this.setLevel(1);
             }
             // Upgrade to Level 3 requires excess population and goods
-            else if (this.receivedPopulation > 0 && this.receivedGoods > 0) {
+            else if (this.receivedPopulation - getM() > 0 && this.receivedGoods - getM() > 0) {
                 this.setLevel(3);
             }
         }
@@ -108,6 +106,11 @@ public class Commercial extends Zone {
     @Override
     public String getOutputType() {
         return "Lifestyle";
+    }
+
+    @Override
+    public String getZoneType() {
+        return "Commercial";
     }
 
     //Getter & Setter

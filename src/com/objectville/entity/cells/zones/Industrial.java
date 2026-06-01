@@ -1,13 +1,14 @@
 package com.objectville.entity.cells.zones;
 
-public class Industrial extends Zone {
+public class Industrial extends Zone{
     private int receivedPopulation;
-    private int prevLevel;
+    private int oldLevel;
 
-    //Initializes the com.objectville.entity.cells.zones.Industrial zone with coordinates and sets received population to 0.
+    //Initializes the Industrial zone with coordinates and sets received population to 0.
     public Industrial(int x, int y) {
         super(x, y);
         this.receivedPopulation = 0;
+        this.oldLevel = 0;
     }
 
     /*
@@ -16,18 +17,13 @@ public class Industrial extends Zone {
      */
     @Override
     public void update() {
+        int oldLevel = this.getLevel();
         updateLevel();
         this.setOutput(calculateOutput());
         this.setUtilityDemand(Math.max(1, this.getOutput()));
 
-        System.out.printf("Industrial at %s generated %d goods", this.toString(), getOutput());
-        
-        if(this.getLevel() < prevLevel){
-            System.out.printf("Industrial at (%d,%d) levels down from %d to %d", this.toString(), this.getLevel(), prevLevel);
-        } else{
-            System.out.printf("Industrial at (%d,%d) levels up from %d to %d", this.toString(), this.getLevel(), prevLevel);
-        }
-
+        System.out.println(getZoneType() + " at " + getLocation() + " generated " + getOutput() + " " + getOutputType().toLowerCase());
+        printLevel(oldLevel, getLevel());
 
         // Clean up temporary data.
         this.resetData();
@@ -47,8 +43,8 @@ public class Industrial extends Zone {
     }
 
     /*
-    Overriding getM because com.objectville.entity.cells.zones.Industrial ONLY requires Electricity and Water.
-    Internet is not a constraint for com.objectville.entity.cells.zones.Industrial production.
+    Overriding getM because Industrial ONLY requires Electricity and Water.
+    Internet is not a constraint for Industrial production.
      */
     @Override
     public int getM() {
@@ -89,7 +85,6 @@ public class Industrial extends Zone {
 
         int currentLevel = this.getLevel();
 
-
         if (currentLevel == 0) {
             // Level 1 requires basic utilities (m > 0) AND population workers
             if (this.receivedPopulation > 0) {
@@ -112,7 +107,7 @@ public class Industrial extends Zone {
                 this.setLevel(1);
             }
             // Upgrade to Level 3 requires excess population presence
-            else if (this.receivedPopulation > 0) {
+            else if (this.receivedPopulation - getM() > 0) {
                 this.setLevel(3);
             }
         }
@@ -122,12 +117,16 @@ public class Industrial extends Zone {
                 this.setLevel(2);
             }
         }
-
     }
 
     @Override
     public String getOutputType() {
         return "Goods";
+    }
+
+    @Override
+    public String getZoneType() {
+        return "Industrial";
     }
 
     public int getReceivedPopulation() {

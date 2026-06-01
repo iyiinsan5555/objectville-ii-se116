@@ -9,6 +9,12 @@ public class School extends ServiceProvider {
 
     @Override
     public String getServiceType() {
+        return "Education";
+    }
+
+    @Override
+    public String getServiceProviderType() {
         return "School";
     }
 }
+

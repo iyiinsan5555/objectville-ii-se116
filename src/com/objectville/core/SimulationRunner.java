@@ -3,10 +3,7 @@ package com.objectville.core;
 import com.objectville.entity.cells.utilityProviders.UtilityProvider;
 import com.objectville.entity.cells.zones.Zone;
 import com.objectville.fileIO.MapReader;
-import com.objectville.util.ResourceDistributor;
-import com.objectville.util.ServiceDistributor;
-import com.objectville.util.UtilityDistributor;
-
+import com.objectville.util.*;
 import java.nio.file.Path;
 
 public class SimulationRunner {
@@ -55,11 +52,9 @@ public class SimulationRunner {
 
     public void run() {
         for (int i=0; i<nTicks; i++) {
-            System.out.println("Tick " + (i+1)); //saw in sample output
-            this.tick(); //tick() for number of ticks
+            System.out.println("Tick " + (i+1));
+            this.tick();
         }
     }
-
-
 
 }

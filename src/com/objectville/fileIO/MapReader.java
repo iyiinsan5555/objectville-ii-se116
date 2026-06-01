@@ -3,21 +3,13 @@ package com.objectville.fileIO;
 import com.objectville.entity.cells.Cell;
 import com.objectville.entity.cells.Empty;
 import com.objectville.entity.cells.Road;
-import com.objectville.entity.cells.serviceProviders.Hospital;
-import com.objectville.entity.cells.serviceProviders.PoliceStation;
-import com.objectville.entity.cells.serviceProviders.School;
-import com.objectville.entity.cells.zones.Commercial;
-import com.objectville.entity.cells.zones.Housing;
-import com.objectville.entity.cells.zones.Industrial;
-import com.objectville.entity.cells.utilityProviders.InternetHub;
-import com.objectville.entity.cells.utilityProviders.PowerPlant;
-import com.objectville.entity.cells.utilityProviders.WaterPumpingStation;
+import com.objectville.entity.cells.serviceProviders.*;
+import com.objectville.entity.cells.zones.*;
+import com.objectville.entity.cells.utilityProviders.*;
 
 import java.io.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
-
-
 
 public class MapReader {
 
@@ -50,8 +42,18 @@ public class MapReader {
                 for (int i=0; i<line.length(); i++) { // i = column
                     char symbol = line.charAt(i);
 
-                    Cell cell = createCellFromSymbol(symbol, row, i);
-                    cellArrayList.add(cell);
+                    Cell cell = null;
+                    try {
+                        cell = createCellFromSymbol(symbol, row, i);
+                    } catch (IllegalArgumentException e) {
+                        System.err.println(e);
+                        System.err.println("By default, cell will be Empty type");
+
+                        cell = new Empty(row, i);
+                    } finally {
+                        cellArrayList.add(cell);
+                    }
+
                 }
                 row++;
             }
@@ -67,7 +69,7 @@ public class MapReader {
         return cellArrayList;
     }
 
-    public Cell createCellFromSymbol(char symbol, int x, int y) {
+    private Cell createCellFromSymbol(char symbol, int x, int y) throws IllegalArgumentException {
         Cell cell = null;
 
         switch (symbol) {
@@ -84,7 +86,7 @@ public class MapReader {
                 cell = new PowerPlant(x, y);
                 break;
             case waterPumpingStationSymbol:
-                cell = new WaterPumpingStation(x, y); // small writing error fixed
+                cell = new WaterPumpingStation(x, y);
                 break;
             case internetHubSymbol:
                 cell = new InternetHub(x, y);
@@ -106,10 +108,9 @@ public class MapReader {
                 break;
             default:
                 System.err.println("Cannot resolve symbol: " + symbol);
-                System.exit(1); //IDK if It's appropriate or not
+                throw new IllegalArgumentException("Symbol (" + symbol + ") cannot be resolved");
         }
 
         return cell;
     }
 }
-

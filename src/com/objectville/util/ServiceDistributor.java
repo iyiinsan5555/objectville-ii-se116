@@ -18,19 +18,19 @@ public class ServiceDistributor {
         for(ServiceProvider s : serviceProviders){
             for (Zone z : zones){
                 if (s.getLocation().distanceTo(z.getLocation()) <= s.getRadius()){
-                    switch (s.getServiceType()){
+                    switch (s.getServiceProviderType()){
                         case "PoliceStation":
                             z.setHasSecurity(true);
                             break;
                         case "Hospital":
-                            z.setHasHealth(true); 
+                            z.setHasHealth(true);
                             break;
                         case "School":
                             z.setHasEducation(true);
                             break;
                     }
-
-                    System.out.printf("%s at %s received %s service", z.getClass().getSimpleName(), z.toString(), z.getServiceType());
+                    //Print message
+                    System.out.println(z.getZoneType() + " at " + z.getLocation() + " received " + s.getServiceType().toLowerCase() +" service");
                 }
             }
         }

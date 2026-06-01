@@ -9,6 +9,11 @@ public class Hospital extends ServiceProvider {
 
     @Override
     public String getServiceType() {
+        return "Health";
+    }
+
+    @Override
+    public String getServiceProviderType() {
         return "Hospital";
     }
 }

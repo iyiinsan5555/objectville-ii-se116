@@ -1,11 +1,7 @@
 package com.objectville.util;
 
 import com.objectville.entity.cells.Cell;
-import com.objectville.entity.cells.zones.Commercial;
-import com.objectville.entity.cells.zones.Housing;
-import com.objectville.entity.cells.zones.Industrial;
-import com.objectville.entity.cells.zones.Zone;
-
+import com.objectville.entity.cells.zones.*;
 import java.util.ArrayList;
 
 public class ResourceDistributor {
@@ -19,7 +15,7 @@ public class ResourceDistributor {
     private ArrayList<Zone> zones;
 
     /*
-    Initializes the com.objectville.util.ResourceDistributor with the grid data.
+    Initializes the ResourceDistributor with the grid data.
     Sets all accumulation and count attributes to zero initially.
      */
     public ResourceDistributor(ArrayList<Cell> cellsArrayList, ArrayList<Zone> zones) {
@@ -62,9 +58,9 @@ public class ResourceDistributor {
     equally among all matching target zones using integer division.
       */
     public void distribute() {
-        // 1. Distribute Population to com.objectville.entity.cells.zones.Industrial and com.objectville.entity.cells.zones.Commercial zones
+        // 1. Distribute Population to Industrial and Commercial zones
         int populationTargets = this.totalIndustrial + this.totalCommercial;
-        if (populationTargets > 0) {
+        if (populationTargets > 0 && totalPopulation > 0) {
             // The lost remainder value is accepted as the mathematical cost of distribution.
             int sharedPopulation = this.totalPopulation / populationTargets;
 
@@ -72,32 +68,36 @@ public class ResourceDistributor {
             for (Zone zone : zones) {
                 if (zone instanceof Industrial) {
                     ((Industrial) zone).setReceivedPopulation(sharedPopulation);
+                    System.out.println(zone.getZoneType() + " at " + zone.getLocation() + " received " + sharedPopulation + " population");
                 } else if (zone instanceof Commercial) {
                     ((Commercial) zone).setReceivedPopulation(sharedPopulation);
+                    System.out.println(zone.getZoneType() + " at " + zone.getLocation() + " received " + sharedPopulation + " population");
                 }
             }
         }
 
-        // Goods produced by com.objectville.entity.cells.zones.Industrial zones are split equally only among com.objectville.entity.cells.zones.Commercial zones.
-        if (this.totalCommercial > 0) {
+        // Goods produced by Industrial zones are split equally only among Commercial zones.
+        if (this.totalCommercial > 0 && totalGoods > 0) {
             int sharedGoods = this.totalGoods / this.totalCommercial;
 
             // Loop through all zones to update commercial instances with their share of goods
             for (Zone zone : zones) {
                 if (zone instanceof Commercial) {
                     ((Commercial) zone).setReceivedGoods(sharedGoods);
+                    System.out.println(zone.getZoneType() + " at " + zone.getLocation() + " received " + sharedGoods + " goods");
                 }
             }
         }
 
-        // Lifestyle items produced by com.objectville.entity.cells.zones.Commercial zones are split equally only among com.objectville.entity.cells.zones.Housing zones.
-        if (this.totalHousing > 0) {
+        // Lifestyle items produced by Commercial zones are split equally only among Housing zones.
+        if (this.totalHousing > 0 && totalLifestyle > 0) {
             int sharedLifestyle = this.totalLifestyle / this.totalHousing;
 
             // Loop through all zones to update housing instances with their share of lifestyle points.
             for (Zone zone : zones) {
                 if (zone instanceof Housing) {
                     ((Housing) zone).setReceivedLifestyle(sharedLifestyle);
+                    System.out.println(zone.getZoneType() + " at " + zone.getLocation() + " received " + sharedLifestyle + " lifestyles");
                 }
             }
         }
@@ -119,13 +119,13 @@ public class ResourceDistributor {
         // Accumulate production outputs strictly matching the specific resource each zone creates
         for (Zone zone : zones) {
             if (zone instanceof Housing) {
-                // com.objectville.entity.cells.zones.Housing generates Population; accumulate output to totalPopulation pool
+                // Housing generates Population; accumulate output to totalPopulation pool
                 this.totalPopulation += zone.getOutput();
             } else if (zone instanceof Industrial) {
-                // com.objectville.entity.cells.zones.Industrial generates Goods; accumulate output to totalGoods pool
+                // Industrial generates Goods; accumulate output to totalGoods pool
                 this.totalGoods += zone.getOutput();
             } else if (zone instanceof Commercial) {
-                // com.objectville.entity.cells.zones.Commercial generates Lifestyle; accumulate output to totalLifestyle pool
+                // Commercial generates Lifestyle; accumulate output to totalLifestyle pool
                 this.totalLifestyle += zone.getOutput();
             }
         }
