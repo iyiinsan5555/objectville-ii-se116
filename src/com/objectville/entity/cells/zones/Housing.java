@@ -2,6 +2,7 @@ package com.objectville.entity.cells.zones;
 
 public class Housing extends Zone {
     private int receivedLifestyle;
+    private int prevLevel;
 
     public Housing(int x, int y) {
         super(x, y);
@@ -14,9 +15,17 @@ public class Housing extends Zone {
      */
     @Override
     public void update() {
+        updateLevel();
         this.setOutput(calculateOutput());
         this.setUtilityDemand(Math.max(1, this.getOutput()));
-        updateLevel();
+
+        System.out.printf("House at %s generated %d population", this.toString(), getOutput());
+        
+        if(this.getLevel() < prevLevel){
+            System.out.printf("House at (%d,%d) levels down from %d to %d", this.toString(), this.getLevel(), prevLevel);
+        } else{
+            System.out.printf("House at (%d,%d) levels up from %d to %d", this.toString(), this.getLevel(), prevLevel);
+        }
 
         this.resetData();
     }
@@ -82,19 +91,23 @@ public class Housing extends Zone {
         if (currentLevel == 0) {
             // Level 1 only requires basic utilities (m > 0)
             this.setLevel(1);
-        } else if (currentLevel == 1) {
+        }
+        else if (currentLevel == 1) {
             // Check if it qualifies to upgrade to Level 2
             if (this.isHasSecurity() && this.isHasHealth() && this.isHasEducation()) {
                 this.setLevel(2);
             }
-        } else if (currentLevel == 2) {
+        }
+        else if (currentLevel == 2) {
             // Gradual fall: if it loses any required service, it drops back to Level 1
             if (!this.isHasSecurity() || !this.isHasHealth() || !this.isHasEducation()) {
                 this.setLevel(1);
-            } else if (this.receivedLifestyle > 0) {
+            }
+            else if (this.receivedLifestyle > 0) {
                 this.setLevel(3);
             }
-        } else if (currentLevel == 3) {
+        }
+        else if (currentLevel == 3) {
             // Gradual fall: if it loses lifestyle or any service, it drops back to Level 2
             if (this.receivedLifestyle == 0 || !this.isHasSecurity() || !this.isHasHealth() || !this.isHasEducation()) {
                 this.setLevel(2);
