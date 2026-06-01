@@ -19,16 +19,18 @@ public class ServiceDistributor {
             for (Zone z : zones){
                 if (s.getLocation().distanceTo(z.getLocation()) <= s.getRadius()){
                     switch (s.getServiceType()){
-                        case "com.objectville.entity.cells.serviceProviders.PoliceStation":
+                        case "PoliceStation":
                             z.setHasSecurity(true);
                             break;
-                        case "com.objectville.entity.cells.serviceProviders.Hospital":
-                            z.setHasHealth(true); // minor error in calling setters
+                        case "Hospital":
+                            z.setHasHealth(true); 
                             break;
-                        case "com.objectville.entity.cells.serviceProviders.School":
+                        case "School":
                             z.setHasEducation(true);
                             break;
                     }
+
+                    System.out.printf("%s at %s received %s service", z.getClass().getSimpleName(), z.toString(), z.getServiceType());
                 }
             }
         }
