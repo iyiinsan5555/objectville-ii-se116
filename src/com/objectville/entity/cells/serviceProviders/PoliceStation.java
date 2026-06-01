@@ -10,6 +10,6 @@ public class PoliceStation extends ServiceProvider {
 
     @Override
     public String getServiceType() {
-        return "com.objectville.entity.cells.serviceProviders.PoliceStation";
+        return "PoliceStation";
     }
 }
