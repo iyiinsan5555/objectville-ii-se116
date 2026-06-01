@@ -40,8 +40,6 @@ public class UtilityDistributor{
             visited.add(startingCell);
             unvisitedQ.add(startingCell);
 
-
-
             while (!unvisitedQ.isEmpty() && startingCell.getTotalWater()>0) {
                 Cell current = unvisitedQ.remove(); //take the first element and stores in current
                 //this is where the unique distribution will happen
@@ -52,7 +50,7 @@ public class UtilityDistributor{
                     startingCell.decTotalWater(consumed);
                 }
 
-                ArrayList<Cell> neighbors = GridManager.getNeighbors(startingCell,cellHashMap);
+                ArrayList<Cell> neighbors = GridManager.getNeighbors(current,cellHashMap);
                 //storing adjacent cells to the queue
                 for (Cell neighbor : neighbors) {
                     if (!visited.contains(neighbor)) {
@@ -94,7 +92,7 @@ public class UtilityDistributor{
 
 
 
-                ArrayList<Cell> neighbors = GridManager.getNeighbors(startingCell,cellHashMap);
+                ArrayList<Cell> neighbors = GridManager.getNeighbors(current,cellHashMap);
                 //storing adjacent cells to the queue
                 for (Cell neighbor : neighbors) {
                     if (!visited.contains(neighbor)) {
@@ -127,7 +125,7 @@ public class UtilityDistributor{
                     startingCell.decTotalElectric(consumed);
                 }
 
-                ArrayList<Cell> neighbors = GridManager.getNeighbors(startingCell,cellHashMap);
+                ArrayList<Cell> neighbors = GridManager.getNeighbors(current,cellHashMap);
                 //storing adjacent cells to the queue
                 for (Cell neighbor : neighbors) {
                     if (!visited.contains(neighbor)) {
