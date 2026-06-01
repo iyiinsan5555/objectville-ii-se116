@@ -1,6 +1,7 @@
 public class Commercial extends Zone{
     private int receivedPopulation;
     private int receivedGoods;
+    private int prevLevel;
 
     public Commercial(int x, int y) {
         super(x, y);
@@ -11,10 +12,18 @@ public class Commercial extends Zone{
     //Updates output, sets minimum utility demand, changes level, and cleans data.
     @Override
     public void update() {
+
+        updateLevel();
         this.setOutput(calculateOutput());
         this.setUtilityDemand(Math.max(1, this.getOutput()));
-        updateLevel();
 
+        System.out.printf("Commercial at %s generated %d lifestyle", this.toString(), getOutput());
+        
+        if(this.getLevel() < prevLevel){
+            System.out.printf("Commercial at (%d,%d) levels down from %d to %d", this.toString(), this.getLevel(), prevLevel);
+        } else{
+            System.out.printf("Commercial at (%d,%d) levels up from %d to %d", this.toString(), this.getLevel(), prevLevel);
+        }
         this.resetData();
     }
 

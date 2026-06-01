@@ -1,5 +1,6 @@
 public class Industrial extends Zone{
     private int receivedPopulation;
+    private int prevLevel;
 
     //Initializes the Industrial zone with coordinates and sets received population to 0.
     public Industrial(int x, int y) {
@@ -13,9 +14,18 @@ public class Industrial extends Zone{
      */
     @Override
     public void update() {
+        updateLevel();
         this.setOutput(calculateOutput());
         this.setUtilityDemand(Math.max(1, this.getOutput()));
-        updateLevel();
+
+        System.out.printf("Industrial at %s generated %d goods", this.toString(), getOutput());
+        
+        if(this.getLevel() < prevLevel){
+            System.out.printf("Industrial at (%d,%d) levels down from %d to %d", this.toString(), this.getLevel(), prevLevel);
+        } else{
+            System.out.printf("Industrial at (%d,%d) levels up from %d to %d", this.toString(), this.getLevel(), prevLevel);
+        }
+
 
         // Clean up temporary data.
         this.resetData();
@@ -76,6 +86,7 @@ public class Industrial extends Zone{
         }
 
         int currentLevel = this.getLevel();
+
 
         if (currentLevel == 0) {
             // Level 1 requires basic utilities (m > 0) AND population workers
