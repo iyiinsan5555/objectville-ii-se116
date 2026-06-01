@@ -9,6 +9,6 @@ public class Hospital extends ServiceProvider {
 
     @Override
     public String getServiceType() {
-        return "com.objectville.entity.cells.serviceProviders.Hospital";
+        return "Hospital";
     }
 }
