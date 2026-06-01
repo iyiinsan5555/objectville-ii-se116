@@ -1,3 +1,12 @@
+package com.objectville.core;
+
+import com.objectville.entity.cells.Cell;
+import com.objectville.entity.cells.serviceProviders.ServiceProvider;
+import com.objectville.entity.cells.utilityProviders.UtilityProvider;
+import com.objectville.entity.cells.zones.Zone;
+import com.objectville.interfaces.Transferable;
+import com.objectville.util.Point;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 

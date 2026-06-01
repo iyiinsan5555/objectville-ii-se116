@@ -1,3 +1,8 @@
+package com.objectville.util;
+
+import com.objectville.entity.cells.serviceProviders.ServiceProvider;
+import com.objectville.entity.cells.zones.Zone;
+
 import java.util.ArrayList;
 
 public class ServiceDistributor {
@@ -12,24 +17,20 @@ public class ServiceDistributor {
     public void distribute(){
         for(ServiceProvider s : serviceProviders){
             for (Zone z : zones){
-                Point location = z.getLocation();
-                int X =  location.getX();
-                int Y = location.getY();
-                if (s.getLocation().distanceTo(location) <= s.getRadius()){
+                if (s.getLocation().distanceTo(z.getLocation()) <= s.getRadius()){
                     switch (s.getServiceType()){
                         case "PoliceStation":
                             z.setHasSecurity(true);
-                            System.out.printf("%s at (%d,%d) received security service", z.getClass().getSimpleName(), X, Y);
                             break;
                         case "Hospital":
-                            z.setHasHealth(true);
-                            System.out.printf("%s at (%d,%d) received health service", z.getClass().getSimpleName(), X, Y);
+                            z.setHasHealth(true); 
                             break;
                         case "School":
                             z.setHasEducation(true);
-                            System.out.printf("%s at (%d,%d) received education service", z.getClass().getSimpleName(), X, Y);
                             break;
                     }
+
+                    System.out.printf("%s at %s received %s service", z.getClass().getSimpleName(), z.toString(), z.getServiceType());
                 }
             }
         }

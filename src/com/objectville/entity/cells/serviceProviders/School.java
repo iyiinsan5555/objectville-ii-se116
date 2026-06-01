@@ -1,3 +1,5 @@
+package com.objectville.entity.cells.serviceProviders;
+
 public class School extends ServiceProvider {
     private static final int radius = 4;
 

@@ -1,3 +1,5 @@
+package com.objectville.entity.cells.serviceProviders;
+
 public class Hospital extends ServiceProvider {
     private static final int radius = 3;
 
