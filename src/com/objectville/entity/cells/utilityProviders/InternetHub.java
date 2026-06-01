@@ -18,7 +18,7 @@ public class InternetHub extends UtilityProvider {
 
     // When the resource is Consumed Simulation Runner can call this
     public void decTotalInternet(int amount) {
-        totalInternet -= amount;
+        totalInternet = Math.max(0, totalInternet - amount);
     }
 
     @Override

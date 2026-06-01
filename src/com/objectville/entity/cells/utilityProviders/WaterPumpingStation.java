@@ -18,7 +18,7 @@ public class WaterPumpingStation extends UtilityProvider {
 
     // When the resource is Consumed Simulation Runner can call this
     public void decTotalWater(int amount) {
-        TotalWater -= amount;
+        TotalWater = Math.max(0, TotalWater - amount);
     }
     
     @Override

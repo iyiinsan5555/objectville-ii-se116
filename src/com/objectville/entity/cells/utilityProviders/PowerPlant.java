@@ -18,7 +18,7 @@ public class PowerPlant extends UtilityProvider {
     
     // When the resource is Consumed Simulation Runner can call this
     public void decTotalElectric(int amount) {
-        totalElectric -= amount;
+        totalElectric = Math.max(0, totalElectric - amount);
     }
 
     @Override
