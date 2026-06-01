@@ -1,24 +1,13 @@
 package com.objectville.entity.cells.zones;
 
-import com.objectville.entity.cells.Cell;
-
-public class Housing extends Zone {
+public class Housing extends Zone{
     private int receivedLifestyle;
-    private int prevLevel;
+    private int oldLevel;
 
     public Housing(int x, int y) {
         super(x, y);
         this.receivedLifestyle = 0;
-    }
-
-    @Override
-    public String getUtilityType() {
-        return "water";
-    }
-
-    @Override
-    public boolean canSupply(Cell cell) {
-        return true;
+        this.oldLevel = 0;
     }
 
     /*
@@ -27,17 +16,13 @@ public class Housing extends Zone {
      */
     @Override
     public void update() {
+        int oldLevel = this.getLevel();
         updateLevel();
         this.setOutput(calculateOutput());
         this.setUtilityDemand(Math.max(1, this.getOutput()));
 
-        System.out.printf("House at %s generated %d population", this.toString(), getOutput());
-        
-        if(this.getLevel() < prevLevel){
-            System.out.printf("House at (%d,%d) levels down from %d to %d", this.toString(), this.getLevel(), prevLevel);
-        } else{
-            System.out.printf("House at (%d,%d) levels up from %d to %d", this.toString(), this.getLevel(), prevLevel);
-        }
+        System.out.println(getZoneType() + " at " + getLocation() + " generated " + getOutput() + " " + getOutputType().toLowerCase());
+        printLevel(oldLevel, getLevel());
 
         this.resetData();
     }
@@ -61,11 +46,16 @@ public class Housing extends Zone {
 
     /*
     Returns the name of the resource produced by this zone.
-    com.objectville.entity.cells.zones.Housing zones are responsible for generating "Population".
+    Housing zones are responsible for generating "Population".
      */
     @Override
     public String getOutputType() {
         return "Population";
+    }
+
+    @Override
+    public String getZoneType() {
+        return "House";
     }
 
     /*
@@ -103,23 +93,19 @@ public class Housing extends Zone {
         if (currentLevel == 0) {
             // Level 1 only requires basic utilities (m > 0)
             this.setLevel(1);
-        }
-        else if (currentLevel == 1) {
+        } else if (currentLevel == 1) {
             // Check if it qualifies to upgrade to Level 2
             if (this.isHasSecurity() && this.isHasHealth() && this.isHasEducation()) {
                 this.setLevel(2);
             }
-        }
-        else if (currentLevel == 2) {
+        } else if (currentLevel == 2) {
             // Gradual fall: if it loses any required service, it drops back to Level 1
             if (!this.isHasSecurity() || !this.isHasHealth() || !this.isHasEducation()) {
                 this.setLevel(1);
-            }
-            else if (this.receivedLifestyle > 0) {
+            } else if (this.receivedLifestyle > 0) {
                 this.setLevel(3);
             }
-        }
-        else if (currentLevel == 3) {
+        } else if (currentLevel == 3) {
             // Gradual fall: if it loses lifestyle or any service, it drops back to Level 2
             if (this.receivedLifestyle == 0 || !this.isHasSecurity() || !this.isHasHealth() || !this.isHasEducation()) {
                 this.setLevel(2);

@@ -23,14 +23,14 @@ public class ServiceDistributor {
                             z.setHasSecurity(true);
                             break;
                         case "Hospital":
-                            z.setHasHealth(true); 
+                            z.setHasHealth(true);
                             break;
                         case "School":
                             z.setHasEducation(true);
                             break;
                     }
-
-                    System.out.printf("%s at %s received %s service", z.getClass().getSimpleName(), z.toString(), z.getServiceType());
+                    //Print message
+                    System.out.println(z.getZoneType() + " at " + z.getLocation() + " received " + s.getServiceType().toLowerCase() +" service");
                 }
             }
         }

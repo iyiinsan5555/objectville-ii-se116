@@ -10,11 +10,14 @@ public abstract class ServiceProvider extends Cell {
         super(x,y);
         this.radius = radius;
     }
-    
+
     //Getters
     public int getRadius() {
         return radius;
     }
 
     public abstract String getServiceType();
+
+    public abstract String getServiceProviderType();
 }
+

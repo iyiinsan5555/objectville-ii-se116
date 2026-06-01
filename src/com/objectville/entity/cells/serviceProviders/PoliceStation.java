@@ -10,6 +10,12 @@ public class PoliceStation extends ServiceProvider {
 
     @Override
     public String getServiceType() {
+        return "Security";
+    }
+
+    @Override
+    public String getServiceProviderType() {
         return "PoliceStation";
     }
 }
+

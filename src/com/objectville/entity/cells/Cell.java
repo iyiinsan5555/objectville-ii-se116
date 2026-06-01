@@ -19,11 +19,4 @@ public abstract class Cell {
     public void setLocation(Point location) {
         this.location = location;
     }
-
-    @Override
-    public String toString() {
-        return "(x" + x + ",y" + y + ")";
-    }
-
-    
 }
