@@ -1,5 +1,6 @@
 public class Industrial extends Zone{
     private int receivedPopulation;
+    private int prevLevel;
 
     //Initializes the Industrial zone with coordinates and sets received population to 0.
     public Industrial(int x, int y) {
@@ -16,6 +17,15 @@ public class Industrial extends Zone{
         updateLevel();
         this.setOutput(calculateOutput());
         this.setUtilityDemand(Math.max(1, this.getOutput()));
+
+        System.out.printf("Industrial at %s generated %d goods", this.toString(), getOutput());
+        
+        if(this.getLevel() < prevLevel){
+            System.out.printf("Industrial at (%d,%d) levels down from %d to %d", this.toString(), this.getLevel(), prevLevel);
+        } else{
+            System.out.printf("Industrial at (%d,%d) levels up from %d to %d", this.toString(), this.getLevel(), prevLevel);
+        }
+
 
         // Clean up temporary data.
         this.resetData();
@@ -50,22 +60,15 @@ public class Industrial extends Zone{
     @Override
     public int calculateOutput() {
         int m = getM();
-        Point location = this.getLocation();
-        int X =  location.getX();
-        int Y = location.getY();
 
         switch (this.getLevel()) {
             case 1:
-                System.out.printf("Industrial at (%d,%d) generated %d goods", X, Y, m);
                 return m;
             case 2:
-                System.out.printf("Industrial at (%d,%d) generated %d goods", X, Y, 2 * m);
                 return 2 * m;
             case 3:
-                System.out.printf("Industrial at (%d,%d) generated %d goods", X, Y, (2 * m) + this.receivedPopulation);
                 return (2 * m) + this.receivedPopulation;
             default:
-                System.out.printf("Industrial at (%d,%d) generated %d goods", X, Y, 0);
                 return 0;
         }
     }
@@ -84,46 +87,37 @@ public class Industrial extends Zone{
 
         int currentLevel = this.getLevel();
 
-        Point location = this.getLocation();
-        int X =  location.getX();
-        int Y = location.getY();
 
         if (currentLevel == 0) {
             // Level 1 requires basic utilities (m > 0) AND population workers
             if (this.receivedPopulation > 0) {
                 this.setLevel(1);
-                System.out.printf("Industrial at (%d,%d) levels up from 0 to 1", X, Y);
             }
         }
         else if (currentLevel == 1) {
             // Upgrade to Level 2 requires maintaining Level 1 conditions + Security service
             if (this.receivedPopulation > 0 && this.isHasSecurity()) {
                 this.setLevel(2);
-                System.out.printf("Industrial at (%d,%d) levels up from 1 to 2", X, Y);
             }
             //Gradual fall to Level 0 if it loses workers
             else if (this.receivedPopulation == 0) {
                 this.setLevel(0);
-                System.out.printf("Industrial at (%d,%d) levels down from 1 to 0", X, Y);
             }
         }
         else if (currentLevel == 2) {
             // If it loses security or workers, it drops back to Level 1
             if (this.receivedPopulation == 0 || !this.isHasSecurity()) {
                 this.setLevel(1);
-                System.out.printf("Industrial at (%d,%d) levels down from 2 to 1", X, Y);
             }
             // Upgrade to Level 3 requires excess population presence
             else if (this.receivedPopulation > 0) {
                 this.setLevel(3);
-                System.out.printf("Industrial at (%d,%d) levels up from 2 to 3", X, Y);
             }
         }
         else if (currentLevel == 3) {
             // If conditions fail, it drops back to Level 2
             if (this.receivedPopulation == 0 || !this.isHasSecurity()) {
                 this.setLevel(2);
-                System.out.printf("Industrial at (%d,%d) levels down from 3 to 2", X, Y);
             }
         }
 

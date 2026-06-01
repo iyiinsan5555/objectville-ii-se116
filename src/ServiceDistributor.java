@@ -19,15 +19,15 @@ public class ServiceDistributor {
                     switch (s.getServiceType()){
                         case "PoliceStation":
                             z.setHasSecurity(true);
-                            System.out.printf("%s at (%d,%d) received security service", z.getClass(), X, Y);
+                            System.out.printf("%s at (%d,%d) received security service", z.getClass().getSimpleName(), X, Y);
                             break;
                         case "Hospital":
                             z.setHasHealth(true);
-                            System.out.printf("%s at (%d,%d) received health service", z.getClass(), X, Y);
+                            System.out.printf("%s at (%d,%d) received health service", z.getClass().getSimpleName(), X, Y);
                             break;
                         case "School":
                             z.setHasEducation(true);
-                            System.out.printf("%s at (%d,%d) received education service", z.getClass(), X, Y);
+                            System.out.printf("%s at (%d,%d) received education service", z.getClass().getSimpleName(), X, Y);
                             break;
                     }
                 }
