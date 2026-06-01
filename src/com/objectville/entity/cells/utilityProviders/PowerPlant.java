@@ -1,4 +1,6 @@
-public class PowerPlant extends UtilityProvider{
+package com.objectville.entity.cells.utilityProviders;
+
+public class PowerPlant extends UtilityProvider {
     private int totalElectric;
 
     public PowerPlant(int row, int column){

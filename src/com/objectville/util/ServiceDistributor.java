@@ -1,3 +1,8 @@
+package com.objectville.util;
+
+import com.objectville.entity.cells.serviceProviders.ServiceProvider;
+import com.objectville.entity.cells.zones.Zone;
+
 import java.util.ArrayList;
 
 public class ServiceDistributor {
@@ -14,13 +19,13 @@ public class ServiceDistributor {
             for (Zone z : zones){
                 if (s.getLocation().distanceTo(z.getLocation()) <= s.getRadius()){
                     switch (s.getServiceType()){
-                        case "PoliceStation":
+                        case "com.objectville.entity.cells.serviceProviders.PoliceStation":
                             z.setHasSecurity(true);
                             break;
-                        case "Hospital":
+                        case "com.objectville.entity.cells.serviceProviders.Hospital":
                             z.setHasHealth(true); // minor error in calling setters
                             break;
-                        case "School":
+                        case "com.objectville.entity.cells.serviceProviders.School":
                             z.setHasEducation(true);
                             break;
                     }

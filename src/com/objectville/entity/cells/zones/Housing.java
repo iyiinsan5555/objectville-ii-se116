@@ -1,4 +1,6 @@
-public class Housing extends Zone{
+package com.objectville.entity.cells.zones;
+
+public class Housing extends Zone {
     private int receivedLifestyle;
 
     public Housing(int x, int y) {
@@ -38,7 +40,7 @@ public class Housing extends Zone{
 
     /*
     Returns the name of the resource produced by this zone.
-    Housing zones are responsible for generating "Population".
+    com.objectville.entity.cells.zones.Housing zones are responsible for generating "Population".
      */
     @Override
     public String getOutputType() {

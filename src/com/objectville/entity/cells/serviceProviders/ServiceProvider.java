@@ -1,3 +1,7 @@
+package com.objectville.entity.cells.serviceProviders;
+
+import com.objectville.entity.cells.Cell;
+
 public abstract class ServiceProvider extends Cell {
     private int radius;
 

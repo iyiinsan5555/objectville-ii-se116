@@ -1,4 +1,9 @@
-public abstract class Zone extends Cell implements Transferable{
+package com.objectville.entity.cells.zones;
+
+import com.objectville.entity.cells.Cell;
+import com.objectville.interfaces.Transferable;
+
+public abstract class Zone extends Cell implements Transferable {
     private int level;
     private int utilityDemand;
     private int output;

@@ -1,3 +1,5 @@
+package com.objectville.entity.cells.serviceProviders;
+
 public class Hospital extends ServiceProvider {
     private static final int radius = 3;
 
@@ -7,6 +9,6 @@ public class Hospital extends ServiceProvider {
 
     @Override
     public String getServiceType() {
-        return "Hospital";
+        return "com.objectville.entity.cells.serviceProviders.Hospital";
     }
 }

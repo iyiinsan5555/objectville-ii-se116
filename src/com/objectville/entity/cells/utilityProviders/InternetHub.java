@@ -1,4 +1,6 @@
-public class InternetHub extends UtilityProvider{
+package com.objectville.entity.cells.utilityProviders;
+
+public class InternetHub extends UtilityProvider {
     private int totalInternet;
 
     public InternetHub(int row, int column){

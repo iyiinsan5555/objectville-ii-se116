@@ -1,3 +1,11 @@
+package com.objectville.util;
+
+import com.objectville.entity.cells.Cell;
+import com.objectville.entity.cells.zones.Commercial;
+import com.objectville.entity.cells.zones.Housing;
+import com.objectville.entity.cells.zones.Industrial;
+import com.objectville.entity.cells.zones.Zone;
+
 import java.util.ArrayList;
 
 public class ResourceDistributor {
@@ -11,7 +19,7 @@ public class ResourceDistributor {
     private ArrayList<Zone> zones;
 
     /*
-    Initializes the ResourceDistributor with the grid data.
+    Initializes the com.objectville.util.ResourceDistributor with the grid data.
     Sets all accumulation and count attributes to zero initially.
      */
     public ResourceDistributor(ArrayList<Cell> cellsArrayList, ArrayList<Zone> zones) {
@@ -54,7 +62,7 @@ public class ResourceDistributor {
     equally among all matching target zones using integer division.
       */
     public void distribute() {
-        // 1. Distribute Population to Industrial and Commercial zones
+        // 1. Distribute Population to com.objectville.entity.cells.zones.Industrial and com.objectville.entity.cells.zones.Commercial zones
         int populationTargets = this.totalIndustrial + this.totalCommercial;
         if (populationTargets > 0) {
             // The lost remainder value is accepted as the mathematical cost of distribution.
@@ -70,7 +78,7 @@ public class ResourceDistributor {
             }
         }
 
-        // Goods produced by Industrial zones are split equally only among Commercial zones.
+        // Goods produced by com.objectville.entity.cells.zones.Industrial zones are split equally only among com.objectville.entity.cells.zones.Commercial zones.
         if (this.totalCommercial > 0) {
             int sharedGoods = this.totalGoods / this.totalCommercial;
 
@@ -82,7 +90,7 @@ public class ResourceDistributor {
             }
         }
 
-        // Lifestyle items produced by Commercial zones are split equally only among Housing zones.
+        // Lifestyle items produced by com.objectville.entity.cells.zones.Commercial zones are split equally only among com.objectville.entity.cells.zones.Housing zones.
         if (this.totalHousing > 0) {
             int sharedLifestyle = this.totalLifestyle / this.totalHousing;
 
@@ -111,13 +119,13 @@ public class ResourceDistributor {
         // Accumulate production outputs strictly matching the specific resource each zone creates
         for (Zone zone : zones) {
             if (zone instanceof Housing) {
-                // Housing generates Population; accumulate output to totalPopulation pool
+                // com.objectville.entity.cells.zones.Housing generates Population; accumulate output to totalPopulation pool
                 this.totalPopulation += zone.getOutput();
             } else if (zone instanceof Industrial) {
-                // Industrial generates Goods; accumulate output to totalGoods pool
+                // com.objectville.entity.cells.zones.Industrial generates Goods; accumulate output to totalGoods pool
                 this.totalGoods += zone.getOutput();
             } else if (zone instanceof Commercial) {
-                // Commercial generates Lifestyle; accumulate output to totalLifestyle pool
+                // com.objectville.entity.cells.zones.Commercial generates Lifestyle; accumulate output to totalLifestyle pool
                 this.totalLifestyle += zone.getOutput();
             }
         }
